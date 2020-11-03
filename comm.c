@@ -1,6 +1,9 @@
 #include "imxrt.h"
 #include "comm.h"
 
+#define DAC_WRITE_CMD 0x24
+
+
 void setWriteAddress(uint16_t address) {
 	GPIO7_DR_TOGGLE = (0x000B0000 + address);
 }
@@ -9,6 +12,31 @@ void setWriteAddress(uint16_t address) {
 void writeData(uint16_t data) {
 	GPIO7_DR_TOGGLE = (0x000D0000 + data);
 }
+
+void writeDAC1(uint16_t data) {
+	//GPIO7_DR_TOGGLE = (0x00010000 + data);
+	setWriteAddress(DAC_WRITE_CMD);
+	writeData(data);
+}
+
+void writeDAC2(uint16_t data) {
+	//GPIO7_DR_TOGGLE = (0x00030000 + data);
+	setWriteAddress(DAC_WRITE_CMD+1);
+	writeData(data);
+}
+
+void writeDAC3(uint16_t data) {
+	//GPIO7_DR_TOGGLE = (0x00050000 + data);
+	setWriteAddress(DAC_WRITE_CMD+2);
+	writeData(data);
+}
+
+void writeDAC4(uint16_t data) {
+	//GPIO7_DR_TOGGLE = (0x00070000 + data);
+	setWriteAddress(DAC_WRITE_CMD+3);
+	writeData(data);
+}
+
 
 
 uint16_t readData(uint16_t address) {

@@ -19,6 +19,10 @@ void writeData(uint16_t data);
 void QuartoInit(void);
 uint16_t readData(uint16_t address);
 uint8_t readReady(void);
+void writeDAC1(uint16_t data);
+void writeDAC2(uint16_t data);
+void writeDAC3(uint16_t data);
+void writeDAC4(uint16_t data);
 
 
 #ifdef __cplusplus
