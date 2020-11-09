@@ -13,6 +13,18 @@ void writeData(uint16_t data) {
 	GPIO7_DR_TOGGLE = (0x000D0000 + data);
 }
 
+
+uint16_t writeAndRead(uint16_t address,uint16_t data){
+	setWriteAddress(address);
+	writeData(data);
+	uint16_t result = readData(address);
+	if (result != data) {
+		printf("Error: got 0x%04x not 0x%04x at addr=0x%04x\r\n",result,data,address);
+		return result;
+	}
+	return result;
+}
+
 void writeDAC1(uint16_t data) {
 	//GPIO7_DR_TOGGLE = (0x00010000 + data);
 	setWriteAddress(DAC_WRITE_CMD);
@@ -52,7 +64,7 @@ uint16_t readData(uint16_t address) {
 			//printf("Waiting for data to be read (attempt %d)...\r\n",i);
 			i++;
 			if (i > 10){
-				printf("Read failed, re-trying\r\n");
+				printf("Read failed on address=0x%04x, re-trying\r\n",address);
 				goto final;
 			}
 		}
@@ -85,12 +97,19 @@ uint16_t readData(uint16_t address) {
 }
 
 uint8_t readReady(void){
-	if ((GPIO7_DR & 0x80000000) == 0x80000000 ){
+	if ((GPIO8_DR & 0x10) == 0x10 ){
 		return 1;
 	} else
 		return 0;
 }
 
 void QuartoInit(void){
-	GPIO6_GDIR |= 0x20; //Set BM1 as output
+	GPIO6_GDIR |= 0x30; //Set BM1 as output
+}
+
+
+uint16_t readADC(void) {
+	uint16_t read = GPIO6_DR >> 16;
+	GPIO6_DR_TOGGLE = 0x00000010; // Tooggle bootmode 0
+	return read;
 }
