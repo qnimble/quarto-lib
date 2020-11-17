@@ -56,7 +56,7 @@ uint16_t readData(uint16_t address) {
 	while(1) {
 
 		GPIO7_DR_TOGGLE = (0x000F0000 + address);
-		j = j+j*234+(j*(j+65));
+		//j = j+j*234+(j*(j+65));
 		//printf("Read Data");
 
 		uint i = 0;
@@ -69,7 +69,7 @@ uint16_t readData(uint16_t address) {
 			}
 		}
 		uint16_t read = GPIO6_DR >> 16;
-		GPIO6_DR_TOGGLE = 0x00000020; // Tooggle bootmode 1
+		GPIO6_DR_TOGGLE = 0x00000020; // Toggle Read Data ACK
 
 		i=0;
 		while(readReady() == 1) { //Wait until data read has been acknowledged
@@ -105,11 +105,20 @@ uint8_t readReady(void){
 
 void QuartoInit(void){
 	GPIO6_GDIR |= 0x30; //Set BM1 as output
+	GPIO6_DR_TOGGLE = 0x00000020; // Toggle Read Data ACK
+	GPIO6_DR_TOGGLE = 0x00000020; // Toggle Read Data ACK
+	GPIO6_DR_TOGGLE = 0x00000020; // Toggle Read Data ACK
+	GPIO6_DR_TOGGLE = 0x00000020; // Toggle Read Data ACK
+	GPIO6_DR_TOGGLE = 0x00000010; // Tooggle ADC Data ACK
+	GPIO6_DR_TOGGLE = 0x00000010; // Tooggle ADC Data ACK
+	GPIO6_DR_TOGGLE = 0x00000010; // Tooggle ADC Data ACK
+	GPIO6_DR_TOGGLE = 0x00000010; // Tooggle ADC Data ACK
+	GPIO6_DR_TOGGLE = 0x00000010; // Tooggle ADC Data ACK
 }
 
 
-uint16_t readADC(void) {
-	uint16_t read = GPIO6_DR >> 16;
+int16_t readADC(void) {
+	int16_t read = GPIO6_DR >> 16;
 	GPIO6_DR_TOGGLE = 0x00000010; // Tooggle bootmode 0
 	return read;
 }
