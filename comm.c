@@ -4,6 +4,18 @@
 #define DAC_WRITE_CMD 0x24
 
 
+void zeroDACs(void) {
+	setWriteAddress(0x24);
+	writeData(0x7FFF);
+	setWriteAddress(0x25);
+	writeData(0x7FFF);
+	setWriteAddress(0x26);
+	writeData(0x7FFF);
+	setWriteAddress(0x27);
+	writeData(0x7FFF);
+}
+
+
 void setWriteAddress(uint16_t address) {
 	GPIO7_DR_TOGGLE = (0x000B0000 + address);
 }

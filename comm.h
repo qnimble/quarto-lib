@@ -36,6 +36,7 @@ void writeDAC2(uint16_t data);
 void writeDAC3(uint16_t data);
 void writeDAC4(uint16_t data);
 int16_t readADC(void);
+void zeroDACs(void);
 
 #ifdef __cplusplus
 }
