@@ -38,27 +38,27 @@ uint16_t writeAndRead(uint16_t address,uint16_t data){
 }
 
 void writeDAC1(uint16_t data) {
-	//GPIO7_DR_TOGGLE = (0x00010000 + data);
-	setWriteAddress(DAC_WRITE_CMD);
-	writeData(data);
+	GPIO7_DR_TOGGLE = (0x00010000 + data);
+	//setWriteAddress(DAC_WRITE_CMD);
+	//writeData(data);
 }
 
 void writeDAC2(uint16_t data) {
-	//GPIO7_DR_TOGGLE = (0x00030000 + data);
-	setWriteAddress(DAC_WRITE_CMD+1);
-	writeData(data);
+	GPIO7_DR_TOGGLE = (0x00030000 + data);
+	//setWriteAddress(DAC_WRITE_CMD+1);
+	//writeData(data);
 }
 
 void writeDAC3(uint16_t data) {
-	//GPIO7_DR_TOGGLE = (0x00050000 + data);
-	setWriteAddress(DAC_WRITE_CMD+2);
-	writeData(data);
+	GPIO7_DR_TOGGLE = (0x00050000 + data);
+	//setWriteAddress(DAC_WRITE_CMD+2);
+	//writeData(data);
 }
 
 void writeDAC4(uint16_t data) {
-	//GPIO7_DR_TOGGLE = (0x00070000 + data);
-	setWriteAddress(DAC_WRITE_CMD+3);
-	writeData(data);
+	GPIO7_DR_TOGGLE = (0x00070000 + data);
+	//setWriteAddress(DAC_WRITE_CMD+3);
+	//writeData(data);
 }
 
 
