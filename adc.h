@@ -1,8 +1,12 @@
-/*
- * adc.h
+/****************************************************************************
+ ** adc.h ******************************************************************
+ ****************************************************************************
  *
- *  Created on: Jan 28, 2021
- *      Author: bluey
+ * Copyright (C) 2021, qNimble (https://qnimble.com)
+ * Author: ben-qnimble
+ *
+ * Distributed under the GPL version 2.0.
+ * See LICENSE for license details.
  */
 
 #ifndef ADC_H_

@@ -1,8 +1,12 @@
-/*
- * comm.h
+/****************************************************************************
+ ** comm.h ******************************************************************
+ ****************************************************************************
  *
- *  Created on: Oct 2, 2020
- *      Author: bluey
+ * Copyright (C) 2021, qNimble (https://qnimble.com)
+ * Author: ben-qnimble
+ *
+ * Distributed under the GPL version 2.0.
+ * See LICENSE for license details.
  */
 
 #ifndef COMM_H_
