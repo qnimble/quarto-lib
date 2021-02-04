@@ -1,5 +1,5 @@
 /****************************************************************************
- ** adc.h ******************************************************************
+ ** adc.h *******************************************************************
  ****************************************************************************
  *
  * Copyright (C) 2021, qNimble (https://qnimble.com)
@@ -13,6 +13,7 @@
 #define ADC_H_
 
 #include <stdint.h>
+#include "imxrt.h"
 
 typedef enum adc_scale {
 	BIPOLAR_1250mV = 3,
@@ -20,7 +21,6 @@ typedef enum adc_scale {
 	BIPOLAR_5V = 11,
 	BIPOLAR_10V = 15
 } __attribute__ ((__packed__)) adc_scale_t ;
-
 
 #define ADC1_BASE_ADDR 0x030
 #define ADC2_BASE_ADDR 0x032
@@ -35,12 +35,10 @@ typedef enum adc_scale {
 #define ADC3_RANGE_ADDR 0x042
 #define ADC4_RANGE_ADDR 0x043
 
-
 #define ADC1_PIN 2
 #define ADC2_PIN 3
 #define ADC3_PIN 4
 #define ADC4_PIN 31
-
 
 #define ADC1_BM (1<<(ADC1_PIN))
 #define ADC2_BM (1<<(ADC2_PIN))
@@ -53,12 +51,9 @@ typedef enum adc_scale {
 #define ADC4_IOBANK GPIO7_DR
 
 
-
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 
 void configureADC(uint8_t channel,uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*function)(void) ) ;
 

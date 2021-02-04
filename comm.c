@@ -13,36 +13,15 @@
 #include "imxrt.h"
 #include "comm.h"
 
-#define DAC_WRITE_CMD 0x24
-
 static int _status = 0;
-
-
-void zeroDACs(void) {
-	setWriteAddress(0x24);
-	writeData(0x7FFF);
-	setWriteAddress(0x25);
-	writeData(0x7FFF);
-	setWriteAddress(0x26);
-	writeData(0x7FFF);
-	setWriteAddress(0x27);
-	writeData(0x7FFF);
-}
-
 
 void setWriteAddress(uint16_t address) {
 	GPIO7_DR_TOGGLE = (0x000B0000 + address);
-	//GPIO7_DR_TOGGLE =0x40000000; //Wait a clock cycle for toggle communication to hold
-	//GPIO7_DR_TOGGLE =0x40000000; //Wait a clock cycle for toggle communication to hold
 }
-
 
 void writeData(uint16_t data) {
 	GPIO7_DR_TOGGLE = (0x000D0000 + data);
-	//GPIO7_DR_TOGGLE =0x40000000; //Wait a clock cycle for toggle communication to hold
-	//GPIO7_DR_TOGGLE =0x40000000; //Wait a clock cycle for toggle communication to hold
 }
-
 
 uint16_t writeAndRead(uint16_t address,uint16_t data){
 	setWriteAddress(address);
@@ -53,38 +32,13 @@ uint16_t writeAndRead(uint16_t address,uint16_t data){
 		result = readData(address);
 		loops++;
 		if (loops >= 10) {
-			return 0xFFFF;
+			_status++;
+			return 0xFFFE;
 		}
 	} while ( result != data);
 	
 	return result;
 }
-
-void writeDAC1(int16_t data) {
-	GPIO7_DR_TOGGLE = (0x00010000 + (uint16_t) data);
-	//setWriteAddress(DAC_WRITE_CMD);
-	//writeData(data);
-}
-
-void writeDAC2(int16_t data) {
-	GPIO7_DR_TOGGLE = (0x00030000 + (uint16_t) data);
-	//setWriteAddress(DAC_WRITE_CMD+1);
-	//writeData(data);
-}
-
-void writeDAC3(int16_t data) {
-	GPIO7_DR_TOGGLE = (0x00050000 + (uint16_t) data);
-	//setWriteAddress(DAC_WRITE_CMD+2);
-	//writeData(data);
-}
-
-void writeDAC4(int16_t data) {
-	GPIO7_DR_TOGGLE = (0x00070000 + (uint16_t) data);
-	//setWriteAddress(DAC_WRITE_CMD+3);
-	//writeData(data);
-}
-
-
 
 uint16_t readData(uint16_t address) {	
 	GPIO6_DR_SET = 0x02;
@@ -153,16 +107,11 @@ uint8_t readReady(void){
 		return 0;
 }
 
-void QuartoInit(void){
-	GPIO6_GDIR |= 0x30; //Set BM1 as output
-	GPIO6_DR_TOGGLE = 0x00000020; // Toggle Read Data ACK
-	GPIO6_DR_TOGGLE = 0x00000010; // Tooggle ADC Data ACK
-	GPIO6_DR_TOGGLE = 0x00000020; // Toggle Read Data ACK
-	GPIO6_DR_TOGGLE = 0x00000010; // Tooggle ADC Data ACK
-	GPIO6_DR_TOGGLE = 0x00000020; // Toggle Read Data ACK
-	GPIO6_DR_TOGGLE = 0x00000010; // Tooggle ADC Data ACK
-	GPIO6_DR_TOGGLE = 0x00000020; // Toggle Read Data ACK
-	GPIO6_DR_TOGGLE = 0x00000010; // Tooggle ADC Data ACK
+void ClearDataRequests(void) {
+	for(int i=0;i<16;i++) {
+		GPIO6_DR_TOGGLE = 0x00000020; // Toggle Read Data ACK
+		GPIO6_DR_TOGGLE = 0x00000010; // Tooggle ADC Data ACK
+	}
 }
 
 

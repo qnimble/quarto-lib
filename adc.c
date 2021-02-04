@@ -21,7 +21,6 @@ void configureADC1(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 	attachInterruptVector(IRQ_GPIO1_INT2, function);
 	NVIC_SET_PRIORITY(IRQ_GPIO1_INT2, 4);
 	NVIC_ENABLE_IRQ(IRQ_GPIO1_INT2);
-
 }
 
 void configureADC2(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*function)(void) ){
@@ -32,7 +31,6 @@ void configureADC2(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 	attachInterruptVector(IRQ_GPIO1_INT3, function);
 	NVIC_SET_PRIORITY(IRQ_GPIO1_INT3, 5);
 	NVIC_ENABLE_IRQ(IRQ_GPIO1_INT3);
-
 }
 
 void configureADC3(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*function)(void) ){
@@ -44,7 +42,6 @@ void configureADC3(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 	NVIC_SET_PRIORITY(IRQ_GPIO3_0_15, 6);
 	NVIC_ENABLE_IRQ(IRQ_GPIO3_0_15);
 }
-
 
 void configureADC4(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*function)(void) ){
 	configureADC(4,fire_every_us,fire_delay,scale,function);
@@ -71,8 +68,6 @@ void disableADC2(void) {
 	GPIO1_IMR &= ~ADC2_BM;
 	GPIO1_ISR = ADC2_BM; // Clear Interrupt just in case
 }
-
-
 
 void configureADC(uint8_t channel,uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*function)(void) ) {
 	uint16_t range_addr;
@@ -116,7 +111,6 @@ int16_t readADC1_from_ISR(void) {
 	GPIO1_ISR = ADC1_BM; // Clear Interrupt
 	int16_t read = GPIO6_DR >> 16;
 	GPIO6_DR_TOGGLE = 0x00000010; // Tooggle bootmode 0 as ACK
-
 	return read;
 }
 
@@ -133,7 +127,6 @@ int16_t readADC3_from_ISR(void) {
 	GPIO6_DR_TOGGLE = 0x00000010; // Tooggle bootmode 0 as ACK
 	return read;
 }
-
 
 int16_t readADC4_from_ISR(void) {
 	GPIO2_ISR = ADC4_BM; // Clear Interrupt
