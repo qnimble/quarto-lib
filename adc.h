@@ -35,25 +35,18 @@ typedef enum adc_scale {
 #define ADC3_RANGE_ADDR 0x042
 #define ADC4_RANGE_ADDR 0x043
 
-#define ADC1_PIN 2
-#define ADC2_PIN 3
-#define ADC3_PIN 4
-#define ADC4_PIN 31
 
-#define ADC1_BM (1<<(ADC1_PIN))
-#define ADC2_BM (1<<(ADC2_PIN))
-#define ADC3_BM (1<<(ADC3_PIN))
-#define ADC4_BM (1<<(ADC4_PIN))
-
-#define ADC1_IOBANK GPIO6_DR
-#define ADC2_IOBANK GPIO6_DR
-#define ADC3_IOBANK GPIO8_DR
-#define ADC4_IOBANK GPIO7_DR
 
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+extern void adc1_irq_ignoredata(void);
+extern void adc2_irq_ignoredata(void);
+extern void adc3_irq_ignoredata(void);
+extern void adc4_irq_ignoredata(void);
+
 
 void configureADC(uint8_t channel,uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*function)(void) ) ;
 
