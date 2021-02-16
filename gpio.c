@@ -16,17 +16,17 @@
 
 void setTrigger1Direction(int direction) {
 	if (direction) {
-		GPIO6_GDIR |= 0x01;
+		GPIO6_GDIR |= 0x02;
 	} else {
-		GPIO6_GDIR &= ~0x01;
+		GPIO6_GDIR &= ~0x02;
 	}
 }
 
 void setTrigger2Direction(int direction) {
 	if (direction) {
-		GPIO6_GDIR |= 0x02;
+		GPIO6_GDIR |= 0x01;
 	} else {
-		GPIO6_GDIR &= ~0x02;
+		GPIO6_GDIR &= ~0x01;
 	}
 }
 
