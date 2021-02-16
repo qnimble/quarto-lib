@@ -101,6 +101,8 @@ void configureADC(uint8_t channel,uint16_t fire_every_us, uint16_t fire_delay, a
 			adc_base_addr = ADC4_BASE_ADDR;
 			break;
 		default:
+			range_addr = 0;
+                        adc_base_addr = 0;
 			break;
 	}
 
