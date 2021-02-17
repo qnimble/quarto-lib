@@ -12,6 +12,8 @@
 #ifndef GPIO_H_
 #define GPIO_H_
 
+#include <stdbool.h>
+
 #define PIN_DIRECTION_OUTPUT 1
 #define PIN_DIRECTION_INPUT 0
 
@@ -22,7 +24,8 @@ extern "C" {
 
 void setTrigger1Direction(int direction);
 void setTrigger2Direction(int direction);
-
+void setLED(bool red, bool green, bool blue);
+void toggleLED(bool red, bool green, bool blue);
 
 
 #define setTrigger1High() GPIO6_DR_SET = 0x02

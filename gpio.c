@@ -31,3 +31,32 @@ void setTrigger2Direction(int direction) {
 }
 
 
+void setLED(bool red, bool green, bool blue) {
+    if (red) {
+        GPIO8_DR_SET = 0x01;
+    } else {
+        GPIO8_DR_CLEAR = 0x01;
+    }
+    if (blue) {
+        GPIO8_DR_SET = 0x02;
+    } else {
+        GPIO8_DR_CLEAR = 0x02;
+    }
+    if (green) {
+        GPIO8_DR_SET = 0x04;
+    } else {
+        GPIO8_DR_SET = 0x04;
+    }
+}
+
+void toggleLED(bool red, bool green, bool blue) {
+    if (red) {
+        GPIO8_DR_TOGGLE = 0x01;
+    }
+    if (blue) {
+        GPIO8_DR_TOGGLE = 0x02;
+    }
+    if (green) {
+        GPIO8_DR_TOGGLE = 0x04;
+    }
+}
