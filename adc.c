@@ -15,6 +15,7 @@
 #include "pins_arduino.h"
 
 void configureADC1(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*function)(void) ){
+	NVIC_DISABLE_IRQ(ADC1_IRQ);
 	configureADC(1,fire_every_us,fire_delay,scale,function);
 	ADC1_IMR |= ADC1_BM;
 	GPIO1_ICR1 &= ~ ( (0x2)<<(2*ADC1_PIN) );
@@ -25,6 +26,7 @@ void configureADC1(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 }
 
 void configureADC2(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*function)(void) ){
+	NVIC_DISABLE_IRQ(ADC2_IRQ);
 	configureADC(2,fire_every_us,fire_delay,scale,function);
 	ADC2_IMR |= ADC2_BM;
 	GPIO1_ICR1 &= ~ ( (0x2)<<(2*ADC2_PIN) );
@@ -35,6 +37,7 @@ void configureADC2(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 }
 
 void configureADC3(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*function)(void) ){
+	NVIC_DISABLE_IRQ(ADC3_IRQ);
 	configureADC(3,fire_every_us,fire_delay,scale,function);
 	ADC3_IMR |= ADC3_BM;
 	GPIO3_ICR1 &= ~ ( (0x2)<<(2*ADC3_PIN) );
@@ -45,6 +48,7 @@ void configureADC3(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 }
 
 void configureADC4(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*function)(void) ){
+	NVIC_DISABLE_IRQ(ADC4_IRQ);
 	configureADC(4,fire_every_us,fire_delay,scale,function);
 	ADC4_IMR |= ADC4_BM;
 	GPIO2_ICR2 &= ~ ( (0x1)<<(ADC4_PIN-1) );  //bit shift by 31*2 mod 32 is 30, or 31-1.
