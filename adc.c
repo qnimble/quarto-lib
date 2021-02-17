@@ -51,8 +51,8 @@ void configureADC4(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 	NVIC_DISABLE_IRQ(ADC4_IRQ);
 	configureADC(4,fire_every_us,fire_delay,scale,function);
 	ADC4_IMR |= ADC4_BM;
-	GPIO2_ICR2 &= ~ ( (0x1)<<(ADC4_PIN-1) );  //bit shift by 31*2 mod 32 is 30, or 31-1.
-	GPIO2_ICR2 |= ( (0x1)<<(ADC4_PIN-1) );    //bit shift by 31*2 mod 32 is 30, or 31-1.
+	GPIO2_ICR2 &= ~ ( (0x2)<<(ADC4_PIN-1) );  //bit shift by 31*2 mod 32 is 30, or 31-1.
+	GPIO2_ICR2 |= ( (0x2)<<(ADC4_PIN-1) );    //bit shift by 31*2 mod 32 is 30, or 31-1.
 	attachInterruptVector(ADC4_IRQ, function);
 	NVIC_SET_PRIORITY(ADC4_IRQ, 7);
 	NVIC_ENABLE_IRQ(ADC4_IRQ);
