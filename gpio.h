@@ -17,6 +17,9 @@
 #define PIN_DIRECTION_OUTPUT 1
 #define PIN_DIRECTION_INPUT 0
 
+#define LED_PIN_RED 0x01
+#define LED_PIN_BLUE 0x02
+#define LED_PIN_GREEN 0x04
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,6 +29,13 @@ void setTrigger1Direction(int direction);
 void setTrigger2Direction(int direction);
 void setLED(bool red, bool green, bool blue);
 void toggleLED(bool red, bool green, bool blue);
+
+void setLEDRed(bool on);
+void setLEDGreen(bool on);
+void setLEDBlue(bool on);
+void toggleLEDRed(void);
+void toggleLEDGreen(void);
+void toggleLEDBlue(void);
 
 
 #define setTrigger1High() GPIO6_DR_SET = 0x02

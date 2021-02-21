@@ -33,30 +33,68 @@ void setTrigger2Direction(int direction) {
 
 void setLED(bool red, bool green, bool blue) {
     if (red) {
-        GPIO8_DR_SET = 0x01;
+        GPIO8_DR_SET = LED_PIN_RED;
     } else {
-        GPIO8_DR_CLEAR = 0x01;
+        GPIO8_DR_CLEAR = LED_PIN_RED;
     }
     if (blue) {
-        GPIO8_DR_SET = 0x02;
+        GPIO8_DR_SET = LED_PIN_BLUE;
     } else {
-        GPIO8_DR_CLEAR = 0x02;
+        GPIO8_DR_CLEAR = LED_PIN_BLUE;
     }
     if (green) {
-        GPIO8_DR_SET = 0x04;
+        GPIO8_DR_SET = LED_PIN_GREEN;
     } else {
-        GPIO8_DR_SET = 0x04;
+        GPIO8_DR_SET = LED_PIN_GREEN;
     }
 }
 
 void toggleLED(bool red, bool green, bool blue) {
     if (red) {
-        GPIO8_DR_TOGGLE = 0x01;
+        GPIO8_DR_TOGGLE = LED_PIN_RED;
     }
     if (blue) {
-        GPIO8_DR_TOGGLE = 0x02;
+        GPIO8_DR_TOGGLE = LED_PIN_BLUE;
     }
     if (green) {
-        GPIO8_DR_TOGGLE = 0x04;
+        GPIO8_DR_TOGGLE = LED_PIN_GREEN;
     }
 }
+
+
+void setLEDRed(bool on) {
+	if (on) {
+		GPIO8_DR_SET = LED_PIN_RED;
+	} else {
+		GPIO8_DR_CLEAR = LED_PIN_RED;
+	}
+}
+
+void setLEDBue(bool on) {
+	if (on) {
+		GPIO8_DR_SET = LED_PIN_BLUE;
+	} else {
+		GPIO8_DR_CLEAR = LED_PIN_BLUE;
+	}
+}
+
+void setLEDGreen(bool on) {
+	if (on) {
+		GPIO8_DR_SET = LED_PIN_GREEN;
+	} else {
+		GPIO8_DR_CLEAR = LED_PIN_GREEN;
+	}
+}
+
+void toggleLEDRed(void) {
+	GPIO8_DR_TOGGLE = LED_PIN_RED;
+}
+
+void toggleLEDGreen(void) {
+	GPIO8_DR_TOGGLE = LED_PIN_GREEN;
+}
+
+void toggleLEDBlue(void) {
+	GPIO8_DR_TOGGLE = LED_PIN_BLUE;
+}
+
