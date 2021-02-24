@@ -15,11 +15,6 @@
 #include <stdint.h>
 #include "imxrt.h"
 
-#define writeDAC1(x) GPIO7_DR_TOGGLE = (0x00010000 + (uint16_t) (x))
-#define writeDAC2(x) GPIO7_DR_TOGGLE = (0x00030000 + (uint16_t) (x))
-#define writeDAC3(x) GPIO7_DR_TOGGLE = (0x00050000 + (uint16_t) (x))
-#define writeDAC4(x) GPIO7_DR_TOGGLE = (0x00070000 + (uint16_t) (x))
-
 
 
 
@@ -28,7 +23,10 @@ extern "C" {
 #endif
 
 void zeroDACs(void);
-
+void writeDAC1(int16_t data);
+void writeDAC2(int16_t data);
+void writeDAC3(int16_t data);
+void writeDAC4(int16_t data);
 
 #ifdef __cplusplus
 }
