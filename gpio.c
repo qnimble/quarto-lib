@@ -45,7 +45,7 @@ void setLED(bool red, bool green, bool blue) {
     if (green) {
         GPIO8_DR_SET = LED_PIN_GREEN;
     } else {
-        GPIO8_DR_SET = LED_PIN_GREEN;
+        GPIO8_DR_CLEAR = LED_PIN_GREEN;
     }
 }
 
@@ -70,7 +70,7 @@ void setLEDRed(bool on) {
 	}
 }
 
-void setLEDBue(bool on) {
+void setLEDBlue(bool on) {
 	if (on) {
 		GPIO8_DR_SET = LED_PIN_BLUE;
 	} else {
