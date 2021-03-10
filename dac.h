@@ -15,10 +15,8 @@
 #include <stdint.h>
 #include "imxrt.h"
 
-void writeDAC1(float data) ;
-void writeDAC1(double data) ;
-
 void zeroDACs(void);
+
 void writeDACRAW1(int16_t data);
 void writeDACRAW2(int16_t data);
 void writeDACRAW3(int16_t data);
