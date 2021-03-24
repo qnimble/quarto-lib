@@ -24,16 +24,16 @@ void writeDACRAW4(int16_t data);
 
 void writeDACRAW(int channel, int16_t data);
 
-void writeDAC1(float data);
-void writeDAC1(double data);
-void writeDAC2(float data);
-void writeDAC2(double data);
-void writeDAC3(float data);
-void writeDAC3(double data);
-void writeDAC4(float data);
-void writeDAC4(double data);
+void writeDAC1(float voltage);
+void writeDAC1(double voltage);
+void writeDAC2(float voltage);
+void writeDAC2(double voltage);
+void writeDAC3(float voltage);
+void writeDAC3(double voltage);
+void writeDAC4(float voltage);
+void writeDAC4(double voltage);
 
-void writeDAC(int channel, float data);
-void writeDAC(int channel, double data);
+void writeDAC(int channel, float voltage);
+void writeDAC(int channel, double voltage);
 
 #endif /* DAC_H_ */
