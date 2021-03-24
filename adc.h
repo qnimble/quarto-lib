@@ -50,12 +50,12 @@ extern void adc3_irq_ignoredata(void);
 extern void adc4_irq_ignoredata(void);
 
 
-void _configureADC(uint8_t channel,uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*function)(void) ) ;
+void _configureADC(uint8_t channel,uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale) ;
 
-void configureADC1(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*function)(void) );
-void configureADC2(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*function)(void) );
-void configureADC3(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*function)(void) );
-void configureADC4(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*function)(void) );
+void configureADC1(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*cb_function)(void) );
+void configureADC2(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*cb_function)(void) );
+void configureADC3(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*cb_function)(void) );
+void configureADC4(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*cb_function)(void) );
 
 int16_t readADCRAW1_from_ISR(void);
 int16_t readADCRAW2_from_ISR(void);
@@ -66,7 +66,6 @@ double readADC1_from_ISR(void);
 double readADC2_from_ISR(void);
 double readADC3_from_ISR(void);
 double readADC4_from_ISR(void);
-
 
 
 void disableADC1(void);

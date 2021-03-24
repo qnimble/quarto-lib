@@ -16,55 +16,55 @@
 
 static uint8_t _adc_scalemode[4] = {0,0,0,0};
 
-void configureADC1(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*function)(void) ){
+void configureADC1(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*cb_function)(void) ){
 	NVIC_DISABLE_IRQ(ADC1_IRQ);
-	_configureADC(1,fire_every_us,fire_delay,scale,function);
-    _adc_scalemode[0] = 0x03 & ( ( ((uint8_t) scale))>>2) ;
+	_configureADC(1,fire_every_us,fire_delay,scale);
+	_adc_scalemode[0] = 0x03 & ( ( ((uint8_t) scale))>>2) ;
 	ADC1_IMR |= ADC1_BM;
 	GPIO1_ICR1 &= ~ ( (0x2)<<(2*ADC1_PIN) );
 	GPIO1_ICR1 |= ( (0x2)<<(2*ADC1_PIN) );
-	attachInterruptVector(ADC1_IRQ, function);
+	attachInterruptVector(ADC1_IRQ, cb_function);
 	NVIC_SET_PRIORITY(ADC1_IRQ, 4);
 	NVIC_ENABLE_IRQ(ADC1_IRQ);
 }
 
-void configureADC2(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*function)(void) ){
+void configureADC2(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*cb_function)(void) ){
 	NVIC_DISABLE_IRQ(ADC2_IRQ);
-	_configureADC(2,fire_every_us,fire_delay,scale,function);
-        _adc_scalemode[1] = 0x03 & ( ( ((uint8_t) scale))>>2) ;
+	_configureADC(2,fire_every_us,fire_delay,scale);
+	_adc_scalemode[1] = 0x03 & ( ( ((uint8_t) scale))>>2) ;
 	ADC2_IMR |= ADC2_BM;
 	GPIO1_ICR1 &= ~ ( (0x2)<<(2*ADC2_PIN) );
 	GPIO1_ICR1 |= ( (0x2)<<(2*ADC2_PIN) );
-	attachInterruptVector(ADC2_IRQ, function);
+	attachInterruptVector(ADC2_IRQ, cb_function);
 	NVIC_SET_PRIORITY(ADC2_IRQ, 5);
 	NVIC_ENABLE_IRQ(ADC2_IRQ);
 }
 
-void configureADC3(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*function)(void) ){
+void configureADC3(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*cb_function)(void) ){
 	NVIC_DISABLE_IRQ(ADC3_IRQ);
-	_configureADC(3,fire_every_us,fire_delay,scale,function);
-        _adc_scalemode[2] = 0x03 & ( ( ((uint8_t) scale))>>2) ;
+	_configureADC(3,fire_every_us,fire_delay,scale);
+	_adc_scalemode[2] = 0x03 & ( ( ((uint8_t) scale))>>2) ;
 	ADC3_IMR |= ADC3_BM;
 	GPIO3_ICR1 &= ~ ( (0x2)<<(2*ADC3_PIN) );
 	GPIO3_ICR1 |= ( (0x2)<<(2*ADC3_PIN) );
-	attachInterruptVector(ADC3_IRQ, function);
+	attachInterruptVector(ADC3_IRQ, cb_function);
 	NVIC_SET_PRIORITY(ADC3_IRQ, 6);
 	NVIC_ENABLE_IRQ(ADC3_IRQ);
 }
 
-void configureADC4(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*function)(void) ){
+void configureADC4(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*cb_function)(void) ){
 	NVIC_DISABLE_IRQ(ADC4_IRQ);
-	_configureADC(4,fire_every_us,fire_delay,scale,function);
-       _adc_scalemode[3] = 0x03 & ( ( ((uint8_t) scale))>>2) ;
+	_configureADC(4,fire_every_us,fire_delay,scale);
+	_adc_scalemode[3] = 0x03 & ( ( ((uint8_t) scale))>>2) ;
 	ADC4_IMR |= ADC4_BM;
 	GPIO2_ICR2 &= ~ ( (0x2)<<(ADC4_PIN-1) );  //bit shift by 31*2 mod 32 is 30, or 31-1.
 	GPIO2_ICR2 |= ( (0x2)<<(ADC4_PIN-1) );    //bit shift by 31*2 mod 32 is 30, or 31-1.
-	attachInterruptVector(ADC4_IRQ, function);
+	attachInterruptVector(ADC4_IRQ, cb_function);
 	NVIC_SET_PRIORITY(ADC4_IRQ, 7);
 	NVIC_ENABLE_IRQ(ADC4_IRQ);
 }
 
-void _configureADC(uint8_t channel,uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*function)(void) ) {
+void _configureADC(uint8_t channel,uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale ) {
 	uint16_t range_addr;
 	uint16_t adc_base_addr;
 	switch(channel) {
@@ -86,7 +86,7 @@ void _configureADC(uint8_t channel,uint16_t fire_every_us, uint16_t fire_delay, 
 			break;
 		default:
 			range_addr = 0;
-            adc_base_addr = 0;
+                        adc_base_addr = 0;
 			break;
 	}
 
@@ -150,7 +150,7 @@ int16_t readADCRAW2_from_ISR(void) {
 double readADC2_from_ISR(void) {
 	int32_t read = readADCRAW2_from_ISR();
 	read = read << (_adc_scalemode[1]);
-    double result = ADC_RAW_TO_VOLTAGE * read;
+        double result = ADC_RAW_TO_VOLTAGE * read;
 	return result;
 }
 
@@ -166,7 +166,7 @@ int16_t readADCRAW3_from_ISR(void) {
 double readADC3_from_ISR(void) {
 	int32_t read = readADCRAW3_from_ISR();
 	read = read << (_adc_scalemode[2]);
-    double result = ADC_RAW_TO_VOLTAGE * read;
+        double result = ADC_RAW_TO_VOLTAGE * read;
 	return result;
 }
 
@@ -182,7 +182,7 @@ int16_t readADCRAW4_from_ISR(void) {
 double readADC4_from_ISR(void) {
 	int32_t read = readADCRAW4_from_ISR();
 	read = read << (_adc_scalemode[3]);
-    double result = ADC_RAW_TO_VOLTAGE * read;
+        double result = ADC_RAW_TO_VOLTAGE * read;
 	return result;
 }
 
