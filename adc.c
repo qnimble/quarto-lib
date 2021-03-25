@@ -24,7 +24,7 @@ void configureADC1(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 	GPIO1_ICR1 &= ~ ( (0x2)<<(2*ADC1_PIN) );
 	GPIO1_ICR1 |= ( (0x2)<<(2*ADC1_PIN) );
 	attachInterruptVector(ADC1_IRQ, cb_function);
-	NVIC_SET_PRIORITY(ADC1_IRQ, 4);
+	NVIC_SET_PRIORITY(ADC1_IRQ, 0<<4);
 	NVIC_ENABLE_IRQ(ADC1_IRQ);
 }
 
@@ -36,7 +36,7 @@ void configureADC2(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 	GPIO1_ICR1 &= ~ ( (0x2)<<(2*ADC2_PIN) );
 	GPIO1_ICR1 |= ( (0x2)<<(2*ADC2_PIN) );
 	attachInterruptVector(ADC2_IRQ, cb_function);
-	NVIC_SET_PRIORITY(ADC2_IRQ, 5);
+	NVIC_SET_PRIORITY(ADC2_IRQ, 1<<4);
 	NVIC_ENABLE_IRQ(ADC2_IRQ);
 }
 
@@ -48,7 +48,7 @@ void configureADC3(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 	GPIO3_ICR1 &= ~ ( (0x2)<<(2*ADC3_PIN) );
 	GPIO3_ICR1 |= ( (0x2)<<(2*ADC3_PIN) );
 	attachInterruptVector(ADC3_IRQ, cb_function);
-	NVIC_SET_PRIORITY(ADC3_IRQ, 6);
+	NVIC_SET_PRIORITY(ADC3_IRQ, 2<<4);
 	NVIC_ENABLE_IRQ(ADC3_IRQ);
 }
 
@@ -60,7 +60,7 @@ void configureADC4(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 	GPIO2_ICR2 &= ~ ( (0x2)<<(ADC4_PIN-1) );  //bit shift by 31*2 mod 32 is 30, or 31-1.
 	GPIO2_ICR2 |= ( (0x2)<<(ADC4_PIN-1) );    //bit shift by 31*2 mod 32 is 30, or 31-1.
 	attachInterruptVector(ADC4_IRQ, cb_function);
-	NVIC_SET_PRIORITY(ADC4_IRQ, 7);
+	NVIC_SET_PRIORITY(ADC4_IRQ, 3<<4);
 	NVIC_ENABLE_IRQ(ADC4_IRQ);
 }
 
@@ -86,7 +86,7 @@ void _configureADC(uint8_t channel,uint16_t fire_every_us, uint16_t fire_delay, 
 			break;
 		default:
 			range_addr = 0;
-                        adc_base_addr = 0;
+			adc_base_addr = 0;
 			break;
 	}
 

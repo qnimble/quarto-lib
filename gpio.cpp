@@ -16,17 +16,17 @@
 
 void setTrigger1Direction(int direction) {
 	if (direction) {
-		GPIO6_GDIR |= 0x02;
+		GPIO6_GDIR |= TRIGGER1_BM;
 	} else {
-		GPIO6_GDIR &= ~0x02;
+		GPIO6_GDIR &= ~TRIGGER1_BM;
 	}
 }
 
 void setTrigger2Direction(int direction) {
 	if (direction) {
-		GPIO6_GDIR |= 0x01;
+		GPIO6_GDIR |= TRIGGER2_BM;
 	} else {
-		GPIO6_GDIR &= ~0x01;
+		GPIO6_GDIR &= ~TRIGGER2_BM;
 	}
 }
 
@@ -96,5 +96,59 @@ void toggleLEDGreen(void) {
 
 void toggleLEDBlue(void) {
 	GPIO8_DR_TOGGLE = LED_PIN_BLUE;
+}
+
+
+void enableInterruptTrigger1(bool rising_edge, void (*cb_function)(void), unsigned int priority = 4) {
+	if (priority > 15) priority = 15;
+	else priority = priority*16;
+
+
+	NVIC_DISABLE_IRQ(TRIGGER1_IRQ);
+	TRIGGER1_IMR |= TRIGGER1_BM;
+
+	if (rising_edge) {
+		GPIO1_ICR1 &= ~ ( (0x2)<<(2*TRIGGER1_PIN) );
+		GPIO1_ICR1 |= ( (0x2)<<(2*TRIGGER1_PIN) );
+	} else {
+		GPIO1_ICR1 &= ~ ( (0x3)<<(2*TRIGGER1_PIN) );
+		GPIO1_ICR1 |= ( (0x3)<<(2*TRIGGER1_PIN) );
+	}
+
+	attachInterruptVector(TRIGGER1_IRQ, cb_function);
+	NVIC_SET_PRIORITY(TRIGGER1_IRQ, priority);
+	NVIC_ENABLE_IRQ(TRIGGER1_IRQ);
+}
+
+
+void enableInterruptTrigger2(bool rising_edge, void (*cb_function)(void), unsigned int priority = 5) {
+	if (priority > 15) priority = 15;
+	else priority = priority*16;
+
+
+	NVIC_DISABLE_IRQ(TRIGGER2_IRQ);
+	TRIGGER2_IMR |= TRIGGER2_BM;
+
+	if (rising_edge) {
+		GPIO1_ICR2 &= ~ ( (0x2)<<(2*TRIGGER2_PIN) );
+		GPIO1_ICR2 |= ( (0x2)<<(2*TRIGGER2_PIN) );
+	} else {
+		GPIO1_ICR2 &= ~ ( (0x3)<<(2*TRIGGER2_PIN) );
+		GPIO1_ICR2 |= ( (0x3)<<(2*TRIGGER2_PIN) );
+	}
+
+	attachInterruptVector(TRIGGER2_IRQ, cb_function);
+	NVIC_SET_PRIORITY(TRIGGER2_IRQ, priority);
+	NVIC_ENABLE_IRQ(TRIGGER2_IRQ);
+}
+
+void disableInterruptTrigger1(void) {
+	NVIC_DISABLE_IRQ(TRIGGER1_IRQ);
+	TRIGGER1_IMR &= ~TRIGGER1_BM;
+}
+
+void disableInterruptTrigger2(void) {
+	NVIC_DISABLE_IRQ(TRIGGER2_IRQ);
+	TRIGGER2_IMR &= ~TRIGGER2_BM;
 }
 
