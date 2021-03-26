@@ -14,22 +14,21 @@
 #include "imxrt.h"
 
 
-void setTrigger1Direction(int direction) {
-	if (direction) {
+void setTrigger1Direction(io_direction_t direction) {
+	if (direction == PIN_DIRECTION_OUTPUT) {
 		GPIO6_GDIR |= TRIGGER1_BM;
 	} else {
 		GPIO6_GDIR &= ~TRIGGER1_BM;
 	}
 }
 
-void setTrigger2Direction(int direction) {
-	if (direction) {
+void setTrigger2Direction(io_direction_t direction) {
+	if (direction == PIN_DIRECTION_OUTPUT) {
 		GPIO6_GDIR |= TRIGGER2_BM;
 	} else {
 		GPIO6_GDIR &= ~TRIGGER2_BM;
 	}
 }
-
 
 void setLED(bool red, bool green, bool blue) {
     if (red) {
@@ -98,12 +97,14 @@ void toggleLEDBlue(void) {
 	GPIO8_DR_TOGGLE = LED_PIN_BLUE;
 }
 
+static void (*trigger1_IRQ)(void);
+static void (*trigger2_IRQ)(void);
 
-void enableInterruptTrigger1(bool rising_edge, void (*cb_function)(void), unsigned int priority = 4) {
+void enableInterruptTrigger1(bool rising_edge, void (*cb_function)(void), unsigned int priority) {
 	if (priority > 15) priority = 15;
 	else priority = priority*16;
 
-
+        trigger1_IRQ = cb_function;
 	NVIC_DISABLE_IRQ(TRIGGER1_IRQ);
 	TRIGGER1_IMR |= TRIGGER1_BM;
 
@@ -115,17 +116,22 @@ void enableInterruptTrigger1(bool rising_edge, void (*cb_function)(void), unsign
 		GPIO1_ICR1 |= ( (0x3)<<(2*TRIGGER1_PIN) );
 	}
 
-	attachInterruptVector(TRIGGER1_IRQ, cb_function);
+	attachInterruptVector(TRIGGER1_IRQ, _intTrigger1);
 	NVIC_SET_PRIORITY(TRIGGER1_IRQ, priority);
 	NVIC_ENABLE_IRQ(TRIGGER1_IRQ);
 }
 
+void _intTrigger1(void) {
+    GPIO1_ISR = TRIGGER1_BM;
+    trigger1_IRQ();
+     __asm__ volatile ("dsb");
+}
 
-void enableInterruptTrigger2(bool rising_edge, void (*cb_function)(void), unsigned int priority = 5) {
+void enableInterruptTrigger2(bool rising_edge, void (*cb_function)(void), unsigned int priority) {
 	if (priority > 15) priority = 15;
 	else priority = priority*16;
 
-
+        trigger2_IRQ = cb_function;
 	NVIC_DISABLE_IRQ(TRIGGER2_IRQ);
 	TRIGGER2_IMR |= TRIGGER2_BM;
 
@@ -137,9 +143,15 @@ void enableInterruptTrigger2(bool rising_edge, void (*cb_function)(void), unsign
 		GPIO1_ICR2 |= ( (0x3)<<(2*TRIGGER2_PIN) );
 	}
 
-	attachInterruptVector(TRIGGER2_IRQ, cb_function);
+	attachInterruptVector(TRIGGER2_IRQ, _intTrigger2);
 	NVIC_SET_PRIORITY(TRIGGER2_IRQ, priority);
 	NVIC_ENABLE_IRQ(TRIGGER2_IRQ);
+}
+
+void _intTrigger2(void) {
+    GPIO1_ISR = TRIGGER2_BM;
+    trigger2_IRQ();
+     __asm__ volatile ("dsb");
 }
 
 void disableInterruptTrigger1(void) {
@@ -151,4 +163,3 @@ void disableInterruptTrigger2(void) {
 	NVIC_DISABLE_IRQ(TRIGGER2_IRQ);
 	TRIGGER2_IMR &= ~TRIGGER2_BM;
 }
-
