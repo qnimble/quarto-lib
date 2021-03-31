@@ -88,8 +88,8 @@ static inline bool getTrigger2(void) {
 	return ((GPIO1_DR & TRIGGER2_BM) == TRIGGER1_BM);
 }
 
-void enableInterruptTrigger1(bool rising_edge, void (*cb_function)(void), unsigned int priority = 1);
-void enableInterruptTrigger2(bool rising_edge, void (*cb_function)(void), unsigned int priority = 1);
+void enableInterruptTrigger1(bool rising_edge, void (*cb_function)(void), unsigned int priority = 4);
+void enableInterruptTrigger2(bool rising_edge, void (*cb_function)(void), unsigned int priority = 5);
 void disableInterruptTrigger1(void);
 void disableInterruptTrigger2(void);
 
