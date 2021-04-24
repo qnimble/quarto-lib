@@ -127,9 +127,9 @@ void disableADC4(void) {
 
 
 int16_t readADCRAW1_from_ISR(void) {
-	GPIO1_ISR = ADC1_BM; // Clear Interrupt
+	ADC1_ISR = ADC1_BM; // Clear Interrupt
 	int16_t read = GPIO6_DR >> 16;
-	GPIO6_DR_TOGGLE = 0x00000010; // Tooggle bootmode 0 as ACK
+	ADC_ACK_BANK = ADC_ACK_PIN; // Tooggle bootmode 0 as ACK
 	return read;
 }
 
@@ -141,41 +141,41 @@ double readADC1_from_ISR(void) {
 }
 
 int16_t readADCRAW2_from_ISR(void) {
-	GPIO1_ISR = ADC2_BM; // Clear Interrupt
+	ADC2_ISR = ADC2_BM; // Clear Interrupt
 	int16_t read = GPIO6_DR >> 16;
-	GPIO6_DR_TOGGLE = 0x00000010; // Tooggle bootmode 0 as ACK
+	ADC_ACK_BANK = ADC_ACK_PIN; // Tooggle bootmode 0 as ACK
 	return read;
 }
 
 double readADC2_from_ISR(void) {
 	int32_t read = readADCRAW2_from_ISR();
 	read = read << (_adc_scalemode[1]);
-        double result = ADC_RAW_TO_VOLTAGE * read;
+    double result = ADC_RAW_TO_VOLTAGE * read;
 	return result;
 }
 
 
 
 int16_t readADCRAW3_from_ISR(void) {
-	GPIO3_ISR = ADC3_BM; // Clear Interrupt
+	ADC3_ISR = ADC3_BM; // Clear Interrupt
 	int16_t read = GPIO6_DR >> 16;
-	GPIO6_DR_TOGGLE = 0x00000010; // Tooggle bootmode 0 as ACK
+	ADC_ACK_BANK = ADC_ACK_PIN; // Tooggle bootmode 0 as ACK
 	return read;
 }
 
 double readADC3_from_ISR(void) {
 	int32_t read = readADCRAW3_from_ISR();
 	read = read << (_adc_scalemode[2]);
-        double result = ADC_RAW_TO_VOLTAGE * read;
+    double result = ADC_RAW_TO_VOLTAGE * read;
 	return result;
 }
 
 
 
 int16_t readADCRAW4_from_ISR(void) {
-	GPIO2_ISR = ADC4_BM; // Clear Interrupt
+	ADC4_ISR = ADC4_BM; // Clear Interrupt
 	int16_t read = GPIO6_DR >> 16;
-	GPIO6_DR_TOGGLE = 0x00000010; // Tooggle bootmode 0 as ACK
+	ADC_ACK_BANK = ADC_ACK_PIN; // Tooggle bootmode 0 as ACK
 	return read;
 }
 
