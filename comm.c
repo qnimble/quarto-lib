@@ -12,6 +12,7 @@
 
 #include "imxrt.h"
 #include "comm.h"
+#include "pins_arduino.h"
 
 static int _status = 0;
 
@@ -41,7 +42,7 @@ uint16_t writeAndRead(uint16_t address,uint16_t data){
 }
 
 uint16_t readData(uint16_t address) {	
-	GPIO6_DR_SET = 0x02;
+	//GPIO6_DR_SET = 0x02;
 	uint full_loops = 0;
 	while(1) {
 		GPIO7_DR_TOGGLE = (0x000F0000 + address);
@@ -60,7 +61,7 @@ uint16_t readData(uint16_t address) {
 			goto final;
 		}
 
-		GPIO6_DR_TOGGLE = 0x00000020; // Toggle Read Data ACK
+		READDATA_ACK_BANK_TOGGLE = READDATA_ACK_PIN; // Toggle Read Data ACK
 
 		i=0;
 		while(readReady() == 1) { //Wait until data read has been acknowledged
@@ -68,17 +69,17 @@ uint16_t readData(uint16_t address) {
 			i++;
 			if (i%10==0){
 				//printf("Failed to get ack of read, toggling again\r\n");				
-				GPIO6_DR_TOGGLE = 0x00000020; // Tooggle bootmode 1
+				READDATA_ACK_BANK_TOGGLE = READDATA_ACK_PIN; // Tooggle bootmode 1
 			}
 			if (i > 100){
 				//printf("Giving on read, moving on\r\n");
 				//Serial.println("Giving up on read, moving on");
 				_status++;
-				GPIO6_DR_CLEAR = 0x02;
+				//GPIO6_DR_CLEAR = 0x02;
 				return 0;
 			}
 		}
-		GPIO6_DR_CLEAR = 0x02;
+		//GPIO6_DR_CLEAR = 0x02;
 
 		//printf(" of @0x%04x\r\n",read);
 		return read;
@@ -87,7 +88,7 @@ uint16_t readData(uint16_t address) {
 			full_loops++;
 			if (full_loops > 10) {
 				_status++;
-				GPIO6_DR_CLEAR = 0x02;
+				//GPIO6_DR_CLEAR = 0x02;
 				return 0;
 			}
 			continue;
@@ -101,7 +102,7 @@ int readStatus(void) {
 
 
 uint8_t readReady(void){
-	if ((GPIO6_DR & 0x0200) == 0x0200 ){
+	if ((READDATA_READY_BANK & READDATA_READY_PIN) == READDATA_READY_PIN ){
 		return 1;
 	} else
 		return 0;
@@ -109,8 +110,8 @@ uint8_t readReady(void){
 
 void ClearDataRequests(void) {
 	for(int i=0;i<16;i++) {
-		GPIO6_DR_TOGGLE = 0x00000020; // Toggle Read Data ACK
-		GPIO6_DR_TOGGLE = 0x00000010; // Tooggle ADC Data ACK
+		READDATA_ACK_BANK_TOGGLE = READDATA_ACK_PIN; // Toggle Read Data ACK
+		ADC_ACK_BANK_TOGGLE = ADC_ACK_PIN; // Tooggle ADC Data ACK
 	}
 }
 
