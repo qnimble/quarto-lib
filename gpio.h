@@ -65,6 +65,20 @@ void toggleLEDRed(void);
 void toggleLEDGreen(void);
 void toggleLEDBlue(void);
 
+
+
+#ifdef __cplusplus
+	void enableInterruptTrigger1(bool rising_edge, void (*cb_function)(void), unsigned int priority = 4);
+	void enableInterruptTrigger2(bool rising_edge, void (*cb_function)(void), unsigned int priority = 5);
+extern "C" {
+#else
+	void enableInterruptTrigger1(bool rising_edge, void (*cb_function)(void), unsigned int priority);
+	void enableInterruptTrigger2(bool rising_edge, void (*cb_function)(void), unsigned int priority);
+#endif
+
+
+
+
 static inline void setTrigger1High(void) __attribute__((always_inline, unused));
 static inline void setTrigger1High(void) {
 	GPIO6_DR_SET = 0x02;
@@ -96,15 +110,17 @@ static inline bool getTrigger1(void) {
 
 static inline bool getTrigger2(void) __attribute__((always_inline, unused));
 static inline bool getTrigger2(void) {
-	return ((GPIO1_DR & TRIGGER2_BM) == TRIGGER1_BM);
+	return ((GPIO1_DR & TRIGGER2_BM) == TRIGGER2_BM);
 }
 
-void enableInterruptTrigger1(bool rising_edge, void (*cb_function)(void), unsigned int priority = 4);
-void enableInterruptTrigger2(bool rising_edge, void (*cb_function)(void), unsigned int priority = 5);
 void disableInterruptTrigger1(void);
 void disableInterruptTrigger2(void);
 
 
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* GPIO_H_ */
