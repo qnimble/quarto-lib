@@ -41,6 +41,21 @@ uint16_t writeAndRead(uint16_t address,uint16_t data){
 	return result;
 }
 
+
+uint16_t readEEPROM(uint32_t address) {
+	uint8_t upper_byte = address>>24;
+	setWriteAddress(0x3000 + upper_byte);
+
+	uint16_t middle_part = ((address>>12) & 0x0FFF);
+	setWriteAddress(0x2000 + middle_part);
+
+	uint16_t lowest = ((address) & 0x0FFF);
+	setWriteAddress(0x1000 + lowest);
+
+	return readData(0x1000);
+}
+
+
 uint16_t readData(uint16_t address) {	
 	//GPIO6_DR_SET = 0x02;
 	uint full_loops = 0;

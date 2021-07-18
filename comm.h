@@ -23,6 +23,7 @@ void setWriteAddress(uint16_t address);
 void writeData(uint16_t data);
 void ClearDataRequests(void) ;
 uint16_t readData(uint16_t address);
+uint16_t readEEPROM(uint32_t address);
 uint8_t readReady(void);
 uint16_t writeAndRead(uint16_t address,uint16_t data);
 int readStatus(void) ;
