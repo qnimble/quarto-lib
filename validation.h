@@ -13,7 +13,7 @@
 #ifndef VALIDATION_H_
 #define VALIDATION_H_
 
-#define DataTestSize 1024
+#define DataTestSize 0x400 //1024
 
 #ifdef __cplusplus
 extern "C" {
@@ -24,7 +24,7 @@ extern "C" {
 
 
 
-bool testReadWrite(uint32_t seed);
+bool testReadWrite(uint32_t seed, uint32_t* errors);
 
 #ifdef __cplusplus
 }
