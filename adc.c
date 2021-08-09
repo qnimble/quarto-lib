@@ -21,8 +21,15 @@ void configureADC1(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 	_configureADC(1,fire_every_us,fire_delay,scale);
 	_adc_scalemode[0] = 0x03 & ( ( ((uint8_t) scale))>>2) ;
 	ADC1_IMR |= ADC1_BM;
-	GPIO1_ICR1 &= ~ ( (0x2)<<(2*ADC1_PIN) );
-	GPIO1_ICR1 |= ( (0x2)<<(2*ADC1_PIN) );
+
+#if ( ADC1_PIN < 16)
+	ADC1_ICR1 &= ~ ( (0x2)<<(2*ADC1_PIN) );
+	ADC1_ICR1 |= ( (0x2)<<(2*ADC1_PIN) );
+#else
+	ADC1_ICR2 &= ~ ( (0x2)<<(2*(ADC1_PIN-16)) );
+	ADC1_ICR2 |= ( (0x2)<<(2*(ADC1_PIN-16)));
+#endif
+
 	attachInterruptVector(ADC1_IRQ, cb_function);
 	NVIC_SET_PRIORITY(ADC1_IRQ, 0<<4);
 	NVIC_ENABLE_IRQ(ADC1_IRQ);
@@ -33,8 +40,14 @@ void configureADC2(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 	_configureADC(2,fire_every_us,fire_delay,scale);
 	_adc_scalemode[1] = 0x03 & ( ( ((uint8_t) scale))>>2) ;
 	ADC2_IMR |= ADC2_BM;
-	GPIO1_ICR1 &= ~ ( (0x2)<<(2*ADC2_PIN) );
-	GPIO1_ICR1 |= ( (0x2)<<(2*ADC2_PIN) );
+
+#if ( ADC2_PIN < 16)
+	ADC2_ICR1 &= ~ ( (0x2)<<(2*ADC2_PIN) );
+	ADC2_ICR1 |= ( (0x2)<<(2*ADC2_PIN) );
+#else
+	ADC2_ICR2 &= ~ ( (0x2)<<(2*(ADC2_PIN-16)) );
+	ADC2_ICR2 |= ( (0x2)<<(2*(ADC2_PIN-16)));
+#endif
 	attachInterruptVector(ADC2_IRQ, cb_function);
 	NVIC_SET_PRIORITY(ADC2_IRQ, 1<<4);
 	NVIC_ENABLE_IRQ(ADC2_IRQ);
@@ -45,8 +58,14 @@ void configureADC3(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 	_configureADC(3,fire_every_us,fire_delay,scale);
 	_adc_scalemode[2] = 0x03 & ( ( ((uint8_t) scale))>>2) ;
 	ADC3_IMR |= ADC3_BM;
-	GPIO3_ICR1 &= ~ ( (0x2)<<(2*ADC3_PIN) );
-	GPIO3_ICR1 |= ( (0x2)<<(2*ADC3_PIN) );
+#if ( ADC3_PIN < 16)
+	ADC3_ICR1 &= ~ ( (0x2)<<(2*ADC3_PIN) );
+	ADC3_ICR1 |= ( (0x2)<<(2*ADC3_PIN) );
+#else
+	ADC3_ICR2 &= ~ ( (0x2)<<(2*(ADC3_PIN-16)) );
+	ADC3_ICR2 |= ( (0x2)<<(2*(ADC3_PIN-16)));
+#endif
+
 	attachInterruptVector(ADC3_IRQ, cb_function);
 	NVIC_SET_PRIORITY(ADC3_IRQ, 2<<4);
 	NVIC_ENABLE_IRQ(ADC3_IRQ);
@@ -57,8 +76,15 @@ void configureADC4(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 	_configureADC(4,fire_every_us,fire_delay,scale);
 	_adc_scalemode[3] = 0x03 & ( ( ((uint8_t) scale))>>2) ;
 	ADC4_IMR |= ADC4_BM;
-	GPIO2_ICR2 &= ~ ( (0x2)<<(ADC4_PIN-1) );  //bit shift by 31*2 mod 32 is 30, or 31-1.
-	GPIO2_ICR2 |= ( (0x2)<<(ADC4_PIN-1) );    //bit shift by 31*2 mod 32 is 30, or 31-1.
+
+#if ( ADC4_PIN < 16)
+	ADC4_ICR1 &= ~ ( (0x2)<<(2*ADC4_PIN) );
+	ADC4_ICR1 |= ( (0x2)<<(2*ADC4_PIN) );
+#else
+	ADC4_ICR2 &= ~ ( (0x2)<<(2*(ADC4_PIN-16)) );
+	ADC4_ICR2 |= ( (0x2)<<(2*(ADC4_PIN-16)));
+#endif
+
 	attachInterruptVector(ADC4_IRQ, cb_function);
 	NVIC_SET_PRIORITY(ADC4_IRQ, 3<<4);
 	NVIC_ENABLE_IRQ(ADC4_IRQ);
