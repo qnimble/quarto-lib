@@ -64,7 +64,7 @@ uint16_t readData(uint16_t address) {
 		uint i = 0;
 		while(readReady() == 0) { //Wait until data ready
 			i++;
-			if (i > 10){
+			if (i > 300){
 				//printf("Read failed on address=0x%04x, re-trying\r\n",address);
 				goto final;
 			}
@@ -87,7 +87,7 @@ uint16_t readData(uint16_t address) {
 				READDATA_ACK_BANK_TOGGLE = READDATA_ACK_PIN; // Tooggle bootmode 1
 			}
 			if (i > 100){
-				//printf("Giving on read, moving on\r\n");
+				//printf("Giving up on read, moving on\r\n");
 				//Serial.println("Giving up on read, moving on");
 				_status++;
 				//GPIO6_DR_CLEAR = 0x02;
