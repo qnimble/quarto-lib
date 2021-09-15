@@ -17,10 +17,12 @@
 static int _status = 0;
 
 void setWriteAddress(uint16_t address) {
+	asm volatile("nop\n");
 	GPIO7_DR_TOGGLE = (0x000B0000 + address);
 }
 
 void writeData(uint16_t data) {
+	asm volatile("nop\n");
 	GPIO7_DR_TOGGLE = (0x000D0000 + data);
 }
 
