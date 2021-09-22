@@ -20,14 +20,16 @@ extern "C" {
 #endif
 
 void setWriteAddress(uint16_t address);
+void _setNVMaddress(uint32_t address);
+void _sendNVMdata(uint32_t data);
 void writeData(uint16_t data);
 void ClearDataRequests(void) ;
 uint16_t readData(uint16_t address);
-uint16_t readEEPROM(uint32_t address);
+uint16_t readNVM(uint32_t address);
 uint8_t readReady(void);
 uint16_t writeAndRead(uint16_t address,uint16_t data);
 int readStatus(void) ;
-
+void writeNVMpages(void* data,uint16_t data_size, uint16_t first_page);
 
 #ifdef __cplusplus
 }

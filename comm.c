@@ -13,6 +13,8 @@
 #include "imxrt.h"
 #include "comm.h"
 #include "pins_arduino.h"
+#include "core_pins.h"
+
 
 static int _status = 0;
 
@@ -44,7 +46,7 @@ uint16_t writeAndRead(uint16_t address,uint16_t data){
 }
 
 
-uint16_t readEEPROM(uint32_t address) {
+void _setNVMaddress(uint32_t address) {
 	uint8_t upper_byte = address>>24;
 	setWriteAddress(0x3000 + upper_byte);
 
@@ -54,11 +56,10 @@ uint16_t readEEPROM(uint32_t address) {
 	uint16_t lowest = ((address) & 0x0FFF);
 	setWriteAddress(0x1000 + lowest);
 
-	return readData(0x1000);
 }
 
 
-uint16_t readData(uint16_t address) {	
+uint16_t readData(uint16_t address) {
 	//GPIO6_DR_SET = 0x02;
 	uint full_loops = 0;
 	while(1) {
@@ -85,7 +86,7 @@ uint16_t readData(uint16_t address) {
 			//printf("Waiting for data read to be ACKd (attempt %d without retoggle)...\r\n",i);
 			i++;
 			if (i%10==0){
-				//printf("Failed to get ack of read, toggling again\r\n");				
+				//printf("Failed to get ack of read, toggling again\r\n");
 				READDATA_ACK_BANK_TOGGLE = READDATA_ACK_PIN; // Tooggle bootmode 1
 			}
 			if (i > 100){
@@ -124,6 +125,149 @@ uint8_t readReady(void){
 	} else
 		return 0;
 }
+
+
+uint16_t readNVM(uint32_t address) {
+	if (address >= 0x20000) {
+		_status = 14;
+		return 0; //128kB of EEPROM, stop if address too large
+	}
+	_setNVMaddress(0x60000000 + address);
+	return readData(0x1000);
+}
+
+void writeNVMpages(void* data,uint16_t data_size, uint16_t start_page) {
+	_status = 0;
+	uint32_t NV_FREQRNG_orig;
+
+	if (data_size == 0) {
+		_status = 20;
+		return;
+	} else if ( data_size + start_page*128 >= 131072) {
+		_status = 21; //size plus starting page outside 128kB size of EEPROM
+		return;
+	}
+
+	_setNVMaddress(0x600801FC); // REQACCESS register
+	_sendNVMdata(0x01); //request exclusive eNVM access
+	uint16_t result = readData(0x1000); //read from same memory address
+	if (( result & 0x04 ) != 0x04) { // check that we got exclusive access
+		_status = 15;
+		return;
+	}
+
+	_setNVMaddress(0x60080158); // CLRHINT register
+	_sendNVMdata(0x03); //Clear errors
+
+	_setNVMaddress(0x4003800C); // ENVM_CR  register
+	NV_FREQRNG_orig = readData(0x1000);
+
+	_sendNVMdata(NV_FREQRNG_orig | 0x01E0); //SET NV_FREQRNG to 0xF, per chip eratta
+
+	_setNVMaddress(0x6008012C); // NV_FREQRNG read-only register
+
+	result = readData(0x1000); //read
+	if (( result ) != 0xF) { //Make sure NV_FREQRNG = 0xF
+		_status = 17;
+		return;
+	}
+
+	uint8_t bytes_to_write;
+	uint8_t bytes_to_zero;
+	uint32_t* data_32 = (uint32_t*) data;
+
+	while(data_size > 0) {
+		if (data_size >= 128){
+			bytes_to_write=128;
+			bytes_to_zero = 0;
+			data_size -= 128;
+		} else {
+			bytes_to_write = data_size;
+			bytes_to_zero = 128 - data_size;
+			data_size = 0;
+		}
+
+		uint32_t WDB_Reg = 0x60080080;
+		uint32_t temp_data;
+		uint8_t* temp_ptr;
+		while(bytes_to_write > 0) {
+			_setNVMaddress(WDB_Reg); // WDB register
+			WDB_Reg += 4;
+			if (bytes_to_write >=4 ) {
+				_sendNVMdata(*data_32++);
+				bytes_to_write -= 4;
+			} else {
+				temp_data = *data_32; //bad data at end since bytes to write less than 4
+				temp_ptr = (uint8_t*) &temp_data;
+				for(uint8_t i=0;i<4;i++) {
+					if ( bytes_to_write != 0) {
+						bytes_to_write--;
+						temp_ptr++;
+					} else {
+						*temp_ptr++ = 0x00; //zero out remaining bits
+						bytes_to_zero--;
+					}
+				}
+				_sendNVMdata(temp_data);
+			}
+		}
+		while(bytes_to_zero > 0) {
+			if ((bytes_to_zero & 0x3) != 0) {
+				//bytes_to_zero should be divisibe by 4, first two bits zero
+				_status = 22;
+				return;
+			}
+
+			_setNVMaddress(WDB_Reg); // WDB register
+			WDB_Reg += 4;
+			_sendNVMdata(0);
+			bytes_to_zero -= 4;
+		}
+
+		//loading full page with data
+		_setNVMaddress(0x60080148); // CMD  register
+		uint32_t payload = 0x08000000;
+		payload +=  ((128*start_page++) & 0x3FF80) ; //set page by masking addresses lowest 7 bits (and bits above 17 to keep in eNVM space)
+		_sendNVMdata(payload); //do write
+
+		uint loops = 0;
+		while(1) {
+			_setNVMaddress(0x60080120); // status register
+			result = readData(0x1000); //read from same spot
+
+			if (( result & 0x01) == 0x01) {
+				break; // break out of loop once NVM to completes task
+			}
+
+			if (loops > 10000) {
+				_status = 18; //timeout on eNVM completion
+				return;
+			}
+
+			delayMicroseconds(25);
+			loops++;
+		}
+	}
+
+	_setNVMaddress(0x4003800C); // REQACCESS register
+	_sendNVMdata(NV_FREQRNG_orig); //SET NV_FREQRNG back to original value
+
+	_setNVMaddress(0x600801FC); // REQACCESS register
+	_sendNVMdata(00); //release exclusive access
+}
+
+
+
+void _sendNVMdata(uint32_t data) {
+	uint8_t thirdbyte = (data>> 16) & 0x00FF;
+	setWriteAddress(0x4000 + thirdbyte);
+	uint8_t fourthbyte = (data >> 24) & 0x00FF;
+	setWriteAddress(0x5000 + fourthbyte);
+	uint16_t lowerhalf = data;
+	GPIO7_DR_TOGGLE = (0x000D0000 + lowerhalf);
+}
+
+
 
 void ClearDataRequests(void) {
 	for(int i=0;i<16;i++) {
