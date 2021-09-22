@@ -75,6 +75,7 @@ void snvs_isr(void) {
 }
 
 void quarto_wdog_disable(void) {
+	WDOG3_CNT = 0xB480A602; //Feed wdog3
 	__disable_irq();
 	WDOG3_CNT = 0xD928C520; //unlock watchdog
 

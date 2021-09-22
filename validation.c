@@ -35,7 +35,7 @@ bool testReadWrite(uint32_t seed,uint32_t* errors) {
 	}
 
 
-	serialprint("About to loop\r\n");
+	//serialprint("About to loop\r\n");
 	address = startAddr;
 	uint16_t temp;
 	for(i=0;i<DataTestSize-startAddr;i++) {
