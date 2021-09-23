@@ -36,4 +36,7 @@ void writeDAC4(double voltage);
 void writeDAC(int channel, float voltage);
 void writeDAC(int channel, double voltage);
 
+float readDAC(int channel);
+int16_t readDACRAW(int channel);
+
 #endif /* DAC_H_ */

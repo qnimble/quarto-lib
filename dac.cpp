@@ -10,6 +10,7 @@
  */
 
 #include "dac.h"
+#include "comm.h"
 
 void zeroDACs(void) {
 	writeDACRAW1(0);
@@ -171,5 +172,31 @@ void writeDAC(int channel, double voltage) {
 		default:
 			break;
 	}
+}
+
+
+int16_t readDACRAW(int channel) {
+    uint16_t address = 0x24;
+    switch(channel) {
+      case 2:
+        address += 1;
+        break;
+      case 3:
+        address += 2;
+        break;
+      case 4:
+          address += 3;
+          break;
+      default:
+        break;
+    }
+  int16_t res = ( int16_t) readData(address);
+  return res;
+}
+
+
+float readDAC(int channel) {
+	int16_t dacvalue = readDACRAW(channel) ;
+	return  0.0003125*dacvalue ;
 }
 
