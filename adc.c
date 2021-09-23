@@ -18,7 +18,7 @@ static uint8_t _adc_scalemode[4] = {0,0,0,0};
 
 void configureADC1(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*cb_function)(void) ){
 	NVIC_DISABLE_IRQ(ADC1_IRQ);
-	_configureADC(1,fire_every_us,fire_delay,scale);
+	_configureADCSettings(1,fire_every_us,fire_delay,scale);
 	_adc_scalemode[0] = 0x03 & ( ( ((uint8_t) scale))>>2) ;
 	ADC1_IMR |= ADC1_BM;
 
@@ -37,7 +37,7 @@ void configureADC1(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 
 void configureADC2(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*cb_function)(void) ){
 	NVIC_DISABLE_IRQ(ADC2_IRQ);
-	_configureADC(2,fire_every_us,fire_delay,scale);
+	_configureADCSettings(2,fire_every_us,fire_delay,scale);
 	_adc_scalemode[1] = 0x03 & ( ( ((uint8_t) scale))>>2) ;
 	ADC2_IMR |= ADC2_BM;
 
@@ -55,7 +55,7 @@ void configureADC2(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 
 void configureADC3(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*cb_function)(void) ){
 	NVIC_DISABLE_IRQ(ADC3_IRQ);
-	_configureADC(3,fire_every_us,fire_delay,scale);
+	_configureADCSettings(3,fire_every_us,fire_delay,scale);
 	_adc_scalemode[2] = 0x03 & ( ( ((uint8_t) scale))>>2) ;
 	ADC3_IMR |= ADC3_BM;
 #if ( ADC3_PIN < 16)
@@ -73,7 +73,7 @@ void configureADC3(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 
 void configureADC4(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*cb_function)(void) ){
 	NVIC_DISABLE_IRQ(ADC4_IRQ);
-	_configureADC(4,fire_every_us,fire_delay,scale);
+	_configureADCSettings(4,fire_every_us,fire_delay,scale);
 	_adc_scalemode[3] = 0x03 & ( ( ((uint8_t) scale))>>2) ;
 	ADC4_IMR |= ADC4_BM;
 
@@ -90,7 +90,27 @@ void configureADC4(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 	NVIC_ENABLE_IRQ(ADC4_IRQ);
 }
 
-void _configureADC(uint8_t channel,uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale ) {
+void configureADC(uint8_t channel, uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*cb_function)(void) ) {
+	switch(channel) {
+		case 1:
+			configureADC1(fire_every_us,fire_delay,scale,cb_function);
+			break;
+		case 2:
+			configureADC2(fire_every_us,fire_delay,scale,cb_function);
+			break;
+		case 3:
+			configureADC3(fire_every_us,fire_delay,scale,cb_function);
+			break;
+		case 4:
+			configureADC4(fire_every_us,fire_delay,scale,cb_function);
+			break;
+		default:
+			break;
+	}
+}
+
+
+void _configureADCSettings(uint8_t channel,uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale ) {
 	uint16_t range_addr;
 	uint16_t adc_base_addr;
 	switch(channel) {
