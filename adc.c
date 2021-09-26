@@ -172,6 +172,28 @@ void disableADC4(void) {
 }
 
 
+void disableADC(uint8_t channel) {
+	switch(channel) {
+		case 1:
+			disableADC1();
+			break;
+		case 2:
+			disableADC2();
+			break;
+		case 3:
+			disableADC3();
+			break;
+		case 4:
+			disableADC4();
+			break;
+		default:
+			break;
+	}
+}
+
+
+
+
 int16_t readADCRAW1_from_ISR(void) {
 	ADC1_ISR = ADC1_BM; // Clear Interrupt
 	int16_t read = GPIO6_DR >> 16;

@@ -73,6 +73,7 @@ void disableADC1(void);
 void disableADC2(void);
 void disableADC3(void);
 void disableADC4(void);
+void disableADC(uint8_t channel);
 
 #ifdef __cplusplus
 }
