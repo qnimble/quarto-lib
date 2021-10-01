@@ -20,26 +20,22 @@ void zeroDACs(void) {
 }
 
 void writeDACRAW1(int16_t data) {
-	asm volatile("nop\n");
-	GPIO7_DR_TOGGLE = (0x00010000 + (uint16_t) data);
+	GPIO2_DR_TOGGLE = (0x00010000 + (uint16_t) data);
 
 }
 
 void writeDACRAW2(int16_t data) {
-	asm volatile("nop\n");
-	GPIO7_DR_TOGGLE = (0x00030000 + (uint16_t) data);
+	GPIO2_DR_TOGGLE = (0x00030000 + (uint16_t) data);
 
 }
 
 void writeDACRAW3(int16_t data) {
-	asm volatile("nop\n");
-	GPIO7_DR_TOGGLE = (0x00050000 + (uint16_t) data);
+	GPIO2_DR_TOGGLE = (0x00050000 + (uint16_t) data);
 
 }
 
 void writeDACRAW4(int16_t data) {
-	asm volatile("nop\n");
-	GPIO7_DR_TOGGLE = (0x00070000 + (uint16_t) data);
+	GPIO2_DR_TOGGLE = (0x00070000 + (uint16_t) data);
 
 }
 
@@ -47,16 +43,16 @@ void writeDACRAW4(int16_t data) {
 void writeDACRAW(int channel, int16_t data) {
 	switch(channel) {
 	case 1:
-		GPIO7_DR_TOGGLE = (0x00010000 + (uint16_t) data);
+		GPIO2_DR_TOGGLE = (0x00010000 + (uint16_t) data);
 		break;
 	case 2:
-		GPIO7_DR_TOGGLE = (0x00030000 + (uint16_t) data);
+		GPIO2_DR_TOGGLE = (0x00030000 + (uint16_t) data);
 		break;
 	case 3:
-		GPIO7_DR_TOGGLE = (0x00050000 + (uint16_t) data);
+		GPIO2_DR_TOGGLE = (0x00050000 + (uint16_t) data);
 		break;
 	case 4:
-		GPIO7_DR_TOGGLE = (0x00070000 + (uint16_t) data);
+		GPIO2_DR_TOGGLE = (0x00070000 + (uint16_t) data);
 		break;
 	default:
 		break;
@@ -69,7 +65,7 @@ void writeDAC1(float voltage) {
 	if (voltage >= 10.2396875) dacvalue = 0x7FFF; //catch overflow
 	else if (voltage <= -10.24) dacvalue = 0x8000; // catch underflow
 	else dacvalue = (int16_t) ((voltage/10.24 * 32768) + 0.5 );
-	GPIO7_DR_TOGGLE = (0x00010000 + (uint16_t) dacvalue);
+	GPIO2_DR_TOGGLE = (0x00010000 + (uint16_t) dacvalue);
 }
 
 
@@ -78,7 +74,11 @@ void writeDAC1(double voltage) {
 	if (voltage >= 10.2396875) dacvalue = 0x7FFF; //catch overflow
 	else if (voltage <= -10.24) dacvalue = 0x8000; // catch underflow
 	else dacvalue = (int16_t) ((voltage/10.24 * 32768) + 0.5 );
-	GPIO7_DR_TOGGLE = (0x00010000 + (uint16_t) dacvalue);
+	GPIO2_DR_TOGGLE = (0x00010000 + (uint16_t) dacvalue);
+}
+
+void writeDAC1(int voltage) {
+	writeDAC1((float) voltage);
 }
 
 
@@ -87,7 +87,7 @@ void writeDAC2(float voltage) {
 	if (voltage >= 10.2396875) dacvalue = 0x7FFF; //catch overflow
 	else if (voltage <= -10.24) dacvalue = 0x8000; // catch underflow
 	else dacvalue = (int16_t) ((voltage/10.24 * 32768) + 0.5 );
-	GPIO7_DR_TOGGLE = (0x00030000 + (uint16_t) dacvalue);
+	GPIO2_DR_TOGGLE = (0x00030000 + (uint16_t) dacvalue);
 }
 
 
@@ -96,7 +96,11 @@ void writeDAC2(double voltage) {
 	if (voltage >= 10.2396875) dacvalue = 0x7FFF; //catch overflow
 	else if (voltage <= -10.24) dacvalue = 0x8000; // catch underflow
 	else dacvalue = (int16_t) ((voltage/10.24 * 32768) + 0.5 );
-	GPIO7_DR_TOGGLE = (0x00030000 + (uint16_t) dacvalue);
+	GPIO2_DR_TOGGLE = (0x00030000 + (uint16_t) dacvalue);
+}
+
+void writeDAC2(int voltage) {
+	writeDAC2((float) voltage);
 }
 
 
@@ -105,7 +109,7 @@ void writeDAC3(float voltage) {
 	if (voltage >= 10.2396875) dacvalue = 0x7FFF; //catch overflow
 	else if (voltage <= -10.24) dacvalue = 0x8000; // catch underflow
 	else dacvalue = (int16_t) ((voltage/10.24 * 32768) + 0.5 );
-	GPIO7_DR_TOGGLE = (0x00050000 + (uint16_t) dacvalue);
+	GPIO2_DR_TOGGLE = (0x00050000 + (uint16_t) dacvalue);
 }
 
 
@@ -114,7 +118,11 @@ void writeDAC3(double voltage) {
 	if (voltage >= 10.2396875) dacvalue = 0x7FFF; //catch overflow
 	else if (voltage <= -10.24) dacvalue = 0x8000; // catch underflow
 	else dacvalue = (int16_t) ((voltage/10.24 * 32768) + 0.5 );
-	GPIO7_DR_TOGGLE = (0x00050000 + (uint16_t) dacvalue);
+	GPIO2_DR_TOGGLE = (0x00050000 + (uint16_t) dacvalue);
+}
+
+void writeDAC3(int voltage) {
+	writeDAC3((float) voltage);
 }
 
 
@@ -123,7 +131,7 @@ void writeDAC4(float voltage) {
 	if (voltage >= 10.2396875) dacvalue = 0x7FFF; //catch overflow
 	else if (voltage <= -10.24) dacvalue = 0x8000; // catch underflow
 	else dacvalue = (int16_t) ((voltage/10.24 * 32768) + 0.5 );
-	GPIO7_DR_TOGGLE = (0x00070000 + (uint16_t) dacvalue);
+	GPIO2_DR_TOGGLE = (0x00070000 + (uint16_t) dacvalue);
 }
 
 
@@ -132,8 +140,13 @@ void writeDAC4(double voltage) {
 	if (voltage >= 10.2396875) dacvalue = 0x7FFF; //catch overflow
 	else if (voltage <= -10.24) dacvalue = 0x8000; // catch underflow
 	else dacvalue = (int16_t) ((voltage/10.24 * 32768) + 0.5 );
-	GPIO7_DR_TOGGLE = (0x00070000 + (uint16_t) dacvalue);
+	GPIO2_DR_TOGGLE = (0x00070000 + (uint16_t) dacvalue);
 }
+
+void writeDAC4(int voltage) {
+	writeDAC4((float) voltage);
+}
+
 
 void writeDAC(int channel, float voltage) {
 	switch(channel) {
@@ -174,6 +187,9 @@ void writeDAC(int channel, double voltage) {
 	}
 }
 
+void writeDAC(int channel, int voltage) {
+	writeDAC(channel,(float) voltage);
+}
 
 int16_t readDACRAW(int channel) {
     uint16_t address = 0x24;

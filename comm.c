@@ -19,13 +19,11 @@
 static int _status = 0;
 
 void setWriteAddress(uint16_t address) {
-	asm volatile("nop\n");
-	GPIO7_DR_TOGGLE = (0x000B0000 + address);
+	GPIO2_DR_TOGGLE = (0x000B0000 + address);
 }
 
 void writeData(uint16_t data) {
-	asm volatile("nop\n");
-	GPIO7_DR_TOGGLE = (0x000D0000 + data);
+	GPIO2_DR_TOGGLE = (0x000D0000 + data);
 }
 
 uint16_t writeAndRead(uint16_t address,uint16_t data){
@@ -63,7 +61,7 @@ uint16_t readData(uint16_t address) {
 	//GPIO6_DR_SET = 0x02;
 	uint full_loops = 0;
 	while(1) {
-		GPIO7_DR_TOGGLE = (0x000F0000 + address);
+		GPIO2_DR_TOGGLE = (0x000F0000 + address);
 		uint i = 0;
 		while(readReady() == 0) { //Wait until data ready
 			i++;
@@ -224,6 +222,12 @@ void writeNVMpages(void* data,uint16_t data_size, uint16_t start_page) {
 			bytes_to_zero -= 4;
 		}
 
+		//do unlock
+		_setNVMaddress(0x60D80148); // CMD  register
+		uint32_t unlock = 0x05000000;
+		_sendNVMdata(unlock); //do wr
+
+
 		//loading full page with data
 		_setNVMaddress(0x60080148); // CMD  register
 		uint32_t payload = 0x08000000;
@@ -264,7 +268,7 @@ void _sendNVMdata(uint32_t data) {
 	uint8_t fourthbyte = (data >> 24) & 0x00FF;
 	setWriteAddress(0x5000 + fourthbyte);
 	uint16_t lowerhalf = data;
-	GPIO7_DR_TOGGLE = (0x000D0000 + lowerhalf);
+	GPIO2_DR_TOGGLE = (0x000D0000 + lowerhalf);
 }
 
 
