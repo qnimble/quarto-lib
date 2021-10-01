@@ -17,17 +17,22 @@
 static uint8_t _adc_scalemode[4] = {0,0,0,0};
 
 void configureADC1(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*cb_function)(void) ){
+	uint32_t ICR_temp;
 	NVIC_DISABLE_IRQ(ADC1_IRQ);
 	_configureADCSettings(1,fire_every_us,fire_delay,scale);
 	_adc_scalemode[0] = 0x03 & ( ( ((uint8_t) scale))>>2) ;
 	ADC1_IMR |= ADC1_BM;
 
 #if ( ADC1_PIN < 16)
-	ADC1_ICR1 &= ~ ( (0x2)<<(2*ADC1_PIN) );
-	ADC1_ICR1 |= ( (0x2)<<(2*ADC1_PIN) );
+	ICR_temp = ADC1_ICR1;
+	ICR_temp &= ~ ( (0x2)<<(2*ADC1_PIN) );
+	ICR_temp |= ( (0x2)<<(2*ADC1_PIN) );
+	ADC1_ICR1 = ICR_temp;
 #else
-	ADC1_ICR2 &= ~ ( (0x2)<<(2*(ADC1_PIN-16)) );
-	ADC1_ICR2 |= ( (0x2)<<(2*(ADC1_PIN-16)));
+	ICR_temp = ADC1_ICR2;
+	ICR_temp &= ~ ( (0x2)<<(2*(ADC1_PIN-16)) );
+	ICR_temp |= ( (0x2)<<(2*(ADC1_PIN-16)));
+	ADC1_ICR2 = ICR_temp;
 #endif
 
 	attachInterruptVector(ADC1_IRQ, cb_function);
@@ -36,17 +41,22 @@ void configureADC1(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 }
 
 void configureADC2(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*cb_function)(void) ){
+	uint32_t ICR_temp;
 	NVIC_DISABLE_IRQ(ADC2_IRQ);
 	_configureADCSettings(2,fire_every_us,fire_delay,scale);
 	_adc_scalemode[1] = 0x03 & ( ( ((uint8_t) scale))>>2) ;
 	ADC2_IMR |= ADC2_BM;
 
 #if ( ADC2_PIN < 16)
-	ADC2_ICR1 &= ~ ( (0x2)<<(2*ADC2_PIN) );
-	ADC2_ICR1 |= ( (0x2)<<(2*ADC2_PIN) );
+	ICR_temp = ADC2_ICR1;
+	ICR_temp &= ~ ( (0x2)<<(2*ADC2_PIN) );
+	ICR_temp |= ( (0x2)<<(2*ADC2_PIN) );
+	ADC2_ICR1 = ICR_temp;
 #else
-	ADC2_ICR2 &= ~ ( (0x2)<<(2*(ADC2_PIN-16)) );
-	ADC2_ICR2 |= ( (0x2)<<(2*(ADC2_PIN-16)));
+	ICR_temp = ADC2_ICR2;
+	ICR_temp &= ~ ( (0x2)<<(2*(ADC2_PIN-16)) );
+	ICR_temp |= ( (0x2)<<(2*(ADC2_PIN-16)));
+	ADC2_ICR2 = ICR_temp;
 #endif
 	attachInterruptVector(ADC2_IRQ, cb_function);
 	NVIC_SET_PRIORITY(ADC2_IRQ, 1<<4);
@@ -54,16 +64,22 @@ void configureADC2(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 }
 
 void configureADC3(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*cb_function)(void) ){
+	uint32_t ICR_temp;
 	NVIC_DISABLE_IRQ(ADC3_IRQ);
 	_configureADCSettings(3,fire_every_us,fire_delay,scale);
 	_adc_scalemode[2] = 0x03 & ( ( ((uint8_t) scale))>>2) ;
 	ADC3_IMR |= ADC3_BM;
+
 #if ( ADC3_PIN < 16)
-	ADC3_ICR1 &= ~ ( (0x2)<<(2*ADC3_PIN) );
-	ADC3_ICR1 |= ( (0x2)<<(2*ADC3_PIN) );
+	ICR_temp = ADC3_ICR1;
+	ICR_temp &= ~ ( (0x2)<<(2*ADC3_PIN) );
+	ICR_temp |= ( (0x2)<<(2*ADC3_PIN) );
+	ADC3_ICR1 = ICR_temp;
 #else
-	ADC3_ICR2 &= ~ ( (0x2)<<(2*(ADC3_PIN-16)) );
-	ADC3_ICR2 |= ( (0x2)<<(2*(ADC3_PIN-16)));
+	ICR_temp = ADC3_ICR2;
+	ICR_temp &= ~ ( (0x2)<<(2*(ADC3_PIN-16)) );
+	ICR_temp |= ( (0x2)<<(2*(ADC3_PIN-16)));
+	ADC3_ICR2 = ICR_temp;
 #endif
 
 	attachInterruptVector(ADC3_IRQ, cb_function);
@@ -72,17 +88,22 @@ void configureADC3(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 }
 
 void configureADC4(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*cb_function)(void) ){
+	uint32_t ICR_temp;
 	NVIC_DISABLE_IRQ(ADC4_IRQ);
 	_configureADCSettings(4,fire_every_us,fire_delay,scale);
 	_adc_scalemode[3] = 0x03 & ( ( ((uint8_t) scale))>>2) ;
 	ADC4_IMR |= ADC4_BM;
 
 #if ( ADC4_PIN < 16)
-	ADC4_ICR1 &= ~ ( (0x2)<<(2*ADC4_PIN) );
-	ADC4_ICR1 |= ( (0x2)<<(2*ADC4_PIN) );
+	ICR_temp = ADC4_ICR1;
+	ICR_temp &= ~ ( (0x2)<<(2*ADC4_PIN) );
+	ICR_temp |= ( (0x2)<<(2*ADC4_PIN) );
+	ADC4_ICR1 = ICR_temp;
 #else
-	ADC4_ICR2 &= ~ ( (0x2)<<(2*(ADC4_PIN-16)) );
-	ADC4_ICR2 |= ( (0x2)<<(2*(ADC4_PIN-16)));
+	ICR_temp = ADC4_ICR2;
+	ICR_temp &= ~ ( (0x2)<<(2*(ADC4_PIN-16)) );
+	ICR_temp |= ( (0x2)<<(2*(ADC4_PIN-16)));
+	ADC4_ICR2 = ICR_temp;
 #endif
 
 	attachInterruptVector(ADC4_IRQ, cb_function);
