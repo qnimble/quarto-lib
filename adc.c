@@ -134,6 +134,11 @@ void configureADC(uint8_t channel, uint16_t fire_every_us, uint16_t fire_delay, 
 void _configureADCSettings(uint8_t channel,uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale ) {
 	uint16_t range_addr;
 	uint16_t adc_base_addr;
+
+	if (fire_delay >= fire_every_us) {
+		fire_delay = 0; //avoid setting delay greater than time between shots
+	}
+
 	switch(channel) {
 		case 1:
 			range_addr = ADC1_RANGE_ADDR;
