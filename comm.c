@@ -152,6 +152,42 @@ void readNVMblock(void* data,uint16_t length, uint32_t start_addr) {
 }
 
 
+
+uint32_t getSerialNumber(void) {
+	uint32_t serial_number;
+	readNVMblock(&serial_number,sizeof(serial_number),SERIAL_NUMBER_ADDRESS);
+	return serial_number;
+}
+
+uint16_t getHardwareID(void) {
+	uint16_t hid;
+	readNVMblock(&hid,sizeof(hid),HARDWARE_ID_ADDRESS);
+	return hid;
+}
+
+
+uint16_t getHardwareMajorRev(void) {
+	uint16_t major;
+	readNVMblock(&major,sizeof(major),HARDWARE_MAJOR_ADDRESS);
+	return major;
+}
+
+uint16_t getHardwareMinorRev(void) {
+	uint16_t minor;
+	readNVMblock(&minor,sizeof(minor),HARDWARE_MINOR_ADDRESS);
+	return minor;
+}
+
+
+void getHardwareUUID(uint8_t* uuid) {
+	readNVMblock(uuid,sizeof(uint32_t)*4,UUID_ADDRESS);
+	return;
+}
+
+
+
+
+
 void writeNVMpages(void* data,uint16_t data_size, uint16_t start_page) {
 	_status = 0;
 	uint32_t NV_FREQRNG_orig;
