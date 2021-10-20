@@ -134,6 +134,24 @@ uint16_t readNVM(uint32_t address) {
 	return readData(0x1000);
 }
 
+
+void readNVMblock(void* data,uint16_t length, uint32_t start_addr) {
+	uint16_t reads = (length+1)/2;
+	uint16_t read_data;
+	uint8_t* read_data_ptr;
+	uint8_t* data_ptr = data;
+	for(uint16_t i = 0; i < reads; i++) {
+		read_data_ptr = (uint8_t*) &read_data;
+		read_data = readNVM(start_addr + 2*i);
+		*data_ptr++ = *read_data_ptr++;
+		length--;
+		if (length != 0 ) {
+			*data_ptr++ = *read_data_ptr++;
+		}
+	}
+}
+
+
 void writeNVMpages(void* data,uint16_t data_size, uint16_t start_page) {
 	_status = 0;
 	uint32_t NV_FREQRNG_orig;

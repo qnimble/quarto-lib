@@ -26,6 +26,7 @@ void writeData(uint16_t data);
 void ClearDataRequests(void) ;
 uint16_t readData(uint16_t address);
 uint16_t readNVM(uint32_t address);
+void readNVMblock(void* data,uint16_t length, uint32_t start_addr);
 uint8_t readReady(void);
 uint16_t writeAndRead(uint16_t address,uint16_t data);
 int readStatus(void) ;
