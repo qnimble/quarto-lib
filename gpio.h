@@ -41,14 +41,23 @@
 #define TRIGGER1_ICR1 GPIO1_ICR1
 #define TRIGGER2_ICR1 GPIO1_ICR1
 
+#define TRIGGER1_EDGE_SEL GPIO1_EDGE_SEL
+#define TRIGGER2_EDGE_SEL GPIO1_EDGE_SEL
+
 
 #define TRIGGER1_IRQ IRQ_GPIO1_INT1
 #define TRIGGER2_IRQ IRQ_GPIO1_INT0
 
 typedef enum io_direction {
-        PIN_DIRECTION_OUTPUT = 1,
-        PIN_DIRECTION_INPUT = 0
+	PIN_DIRECTION_OUTPUT = 1,
+	PIN_DIRECTION_INPUT = 0
 } __attribute__ ((__packed__)) io_direction_t ;
+
+typedef enum trigger_edge {
+    FALLING_EDGE = 0,
+	RISING_EDGE = 1,
+	BOTH_EDGES = 2,
+} __attribute__ ((__packed__)) trigger_edge_t ;
 
 
 
@@ -68,8 +77,8 @@ void toggleLEDBlue(void);
 
 
 #ifdef __cplusplus
-	void enableInterruptTrigger1(bool rising_edge, void (*cb_function)(void), unsigned int priority = 4);
-	void enableInterruptTrigger2(bool rising_edge, void (*cb_function)(void), unsigned int priority = 5);
+	void enableInterruptTrigger1(trigger_edge_t edge, void (*cb_function)(void), unsigned int priority = 4);
+	void enableInterruptTrigger2(trigger_edge_t edge, void (*cb_function)(void), unsigned int priority = 5);
 extern "C" {
 #else
 	void enableInterruptTrigger1(bool rising_edge, void (*cb_function)(void), unsigned int priority);

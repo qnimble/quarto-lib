@@ -100,7 +100,7 @@ void toggleLEDBlue(void) {
 static void (*trigger1_IRQ)(void);
 static void (*trigger2_IRQ)(void);
 
-void enableInterruptTrigger1(bool rising_edge, void (*cb_function)(void), unsigned int priority) {
+void enableInterruptTrigger1(trigger_edge_t edge, void (*cb_function)(void), unsigned int priority) {
 	if (priority > 15) priority = 15;
 	else priority = priority*16;
 
@@ -108,12 +108,16 @@ void enableInterruptTrigger1(bool rising_edge, void (*cb_function)(void), unsign
 	NVIC_DISABLE_IRQ(TRIGGER1_IRQ);
 	TRIGGER1_IMR |= TRIGGER1_BM;
 
-	if (rising_edge) {
+	if (edge == RISING_EDGE) {
 		TRIGGER1_ICR1 &= ~ ( (0x3)<<(2*TRIGGER1_PIN) ); //mask off active bits
 		TRIGGER1_ICR1 |= ( (0x2)<<(2*TRIGGER1_PIN) ); // set to 0x2
-	} else {
+		TRIGGER1_EDGE_SEL &= ~(1<<TRIGGER1_PIN);
+	} else if (edge == FALLING_EDGE) {
 		TRIGGER1_ICR1 &= ~ ( (0x3)<<(2*TRIGGER1_PIN) );//mask off active bits
 		TRIGGER1_ICR1 |= ( (0x3)<<(2*TRIGGER1_PIN) );  // set to 0x3
+		TRIGGER1_EDGE_SEL &= ~(1<<TRIGGER1_PIN);
+	} else if (edge == BOTH_EDGES) {
+		TRIGGER1_EDGE_SEL |= (1<<TRIGGER1_PIN);
 	}
 
 	attachInterruptVector(TRIGGER1_IRQ, _intTrigger1);
@@ -127,7 +131,7 @@ void _intTrigger1(void) {
      __asm__ volatile ("dsb");
 }
 
-void enableInterruptTrigger2(bool rising_edge, void (*cb_function)(void), unsigned int priority) {
+void enableInterruptTrigger2(trigger_edge_t edge, void (*cb_function)(void), unsigned int priority) {
 	if (priority > 15) priority = 15;
 	else priority = priority*16;
 
@@ -135,13 +139,18 @@ void enableInterruptTrigger2(bool rising_edge, void (*cb_function)(void), unsign
 	NVIC_DISABLE_IRQ(TRIGGER2_IRQ);
 	TRIGGER2_IMR |= TRIGGER2_BM;
 
-	if (rising_edge) {
-		TRIGGER1_ICR1 &= ~ ( (0x3)<<(2*TRIGGER2_PIN) );//mask off active bits
-		TRIGGER1_ICR1 |= ( (0x2)<<(2*TRIGGER2_PIN) ); // set to 0x2
+	if (edge == RISING_EDGE) {
+		TRIGGER2_ICR1 &= ~ ( (0x3)<<(2*TRIGGER2_PIN) );//mask off active bits
+		TRIGGER2_ICR1 |= ( (0x2)<<(2*TRIGGER2_PIN) ); // set to 0x2
+		TRIGGER2_EDGE_SEL &= ~(1<<TRIGGER2_PIN);
+	} else if (edge == FALLING_EDGE ){
+		TRIGGER2_ICR1 &= ~ ( (0x3)<<(2*TRIGGER2_PIN) ); //mask off active bits
+		TRIGGER2_ICR1 |= ( (0x3)<<(2*TRIGGER2_PIN) );// set to 0x3
+		TRIGGER2_EDGE_SEL &= ~(1<<TRIGGER2_PIN);
 	} else {
-		TRIGGER1_ICR1 &= ~ ( (0x3)<<(2*TRIGGER2_PIN) ); //mask off active bits
-		TRIGGER1_ICR1 |= ( (0x3)<<(2*TRIGGER2_PIN) );// set to 0x3
+		TRIGGER2_EDGE_SEL |= (1<<TRIGGER2_PIN);
 	}
+
 
 	attachInterruptVector(TRIGGER2_IRQ, _intTrigger2);
 	NVIC_SET_PRIORITY(TRIGGER2_IRQ, priority);
