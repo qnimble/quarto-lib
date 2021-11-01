@@ -13,28 +13,28 @@
 #include "comm.h"
 
 void zeroDACs(void) {
-	writeDACRAW1(0);
-	writeDACRAW2(0);
-	writeDACRAW3(0);
-	writeDACRAW4(0);
+	writeDAC1RAW(0);
+	writeDAC2RAW(0);
+	writeDAC3RAW(0);
+	writeDAC4RAW(0);
 }
 
-void writeDACRAW1(int16_t data) {
+void writeDAC1RAW(int16_t data) {
 	GPIO2_DR_TOGGLE = (0x00010000 + (uint16_t) data);
 
 }
 
-void writeDACRAW2(int16_t data) {
+void writeDAC2RAW(int16_t data) {
 	GPIO2_DR_TOGGLE = (0x00030000 + (uint16_t) data);
 
 }
 
-void writeDACRAW3(int16_t data) {
+void writeDAC3RAW(int16_t data) {
 	GPIO2_DR_TOGGLE = (0x00050000 + (uint16_t) data);
 
 }
 
-void writeDACRAW4(int16_t data) {
+void writeDAC4RAW(int16_t data) {
 	GPIO2_DR_TOGGLE = (0x00070000 + (uint16_t) data);
 
 }

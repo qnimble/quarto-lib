@@ -63,7 +63,10 @@ typedef enum trigger_edge {
 
 void setTrigger1Direction(io_direction_t direction);
 void setTrigger2Direction(io_direction_t direction);
-
+void triggerMode(uint8_t pin, uint8_t mode);
+void triggerWrite(uint8_t pin, uint8_t value);
+uint8_t triggerRead(uint8_t pin);
+void setTriggerDirection(uint8_t channel,io_direction_t direction);
 void setLED(bool red, bool green, bool blue);
 void toggleLED(bool red, bool green, bool blue);
 
@@ -76,13 +79,17 @@ void toggleLEDBlue(void);
 
 
 
+
 #ifdef __cplusplus
 	void enableInterruptTrigger1(trigger_edge_t edge, void (*cb_function)(void), unsigned int priority = 4);
 	void enableInterruptTrigger2(trigger_edge_t edge, void (*cb_function)(void), unsigned int priority = 5);
+	void enableInterruptTrigger(uint8_t pin, trigger_edge_t edge, void (*cb_function)(void));
+	void enableInterruptTrigger(uint8_t pin, trigger_edge_t edge, void (*cb_function)(void), unsigned int priority);
 extern "C" {
 #else
 	void enableInterruptTrigger1(bool rising_edge, void (*cb_function)(void), unsigned int priority);
 	void enableInterruptTrigger2(bool rising_edge, void (*cb_function)(void), unsigned int priority);
+	void enableInterruptTrigger(uint8_t pin, trigger_edge_t edge, void (*cb_function)(void), unsigned int priority);
 #endif
 
 
@@ -124,7 +131,7 @@ static inline bool getTrigger2(void) {
 
 void disableInterruptTrigger1(void);
 void disableInterruptTrigger2(void);
-
+void disableInterruptTrigger(uint8_t pin);
 
 
 

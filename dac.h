@@ -17,10 +17,10 @@
 
 void zeroDACs(void);
 
-void writeDACRAW1(int16_t data);
-void writeDACRAW2(int16_t data);
-void writeDACRAW3(int16_t data);
-void writeDACRAW4(int16_t data);
+void writeDAC1RAW(int16_t data);
+void writeDAC2RAW(int16_t data);
+void writeDAC3RAW(int16_t data);
+void writeDAC4RAW(int16_t data);
 
 void writeDACRAW(int channel, int16_t data);
 

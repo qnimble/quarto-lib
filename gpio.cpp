@@ -12,8 +12,52 @@
 
 #include "gpio.h"
 #include "imxrt.h"
+#include "core_pins.h"
+
+void triggerMode(uint8_t pin, uint8_t mode) {
+	switch (pin) {
+	case 1:
+		pinMode(12,mode);
+		break;
+	case 2:
+		pinMode(13,mode);
+		break;
+	default:
+		break;
+	}
+}
 
 
+void triggerWrite(uint8_t pin, uint8_t value) {
+	switch (pin) {
+		case 1:
+			digitalWrite(12,value);
+			break;
+		case 2:
+			digitalWrite(13,value);
+			break;
+		default:
+			break;
+	}
+}
+
+uint8_t triggerRead(uint8_t pin) {
+	switch (pin) {
+		case 1:
+			return digitalRead(12);
+			break;
+		case 2:
+			return digitalRead(13);
+			break;
+		default:
+			return 0;
+			break;
+
+	}
+}
+
+
+/*
 void setTrigger1Direction(io_direction_t direction) {
 	if (direction == PIN_DIRECTION_OUTPUT) {
 		TRIGGER1_GDIR |= TRIGGER1_BM;
@@ -29,6 +73,20 @@ void setTrigger2Direction(io_direction_t direction) {
 		TRIGGER2_GDIR &= ~TRIGGER2_BM;
 	}
 }
+
+void setTriggerDirection(uint8_t channel,io_direction_t direction) {
+	switch(channel) {
+	case 1:
+		setTrigger1Direction(direction);
+		break;
+	case 2:
+		setTrigger2Direction(direction);
+		break;
+	default:
+		break;
+	}
+}
+*/
 
 void setLED(bool red, bool green, bool blue) {
     if (red) {
@@ -157,6 +215,34 @@ void enableInterruptTrigger2(trigger_edge_t edge, void (*cb_function)(void), uns
 	NVIC_ENABLE_IRQ(TRIGGER2_IRQ);
 }
 
+void enableInterruptTrigger(uint8_t pin, trigger_edge_t edge, void (*cb_function)(void), unsigned int priority) {
+	switch (pin) {
+		case 1:
+			enableInterruptTrigger1(edge,cb_function,priority);
+			break;
+		case 2:
+			enableInterruptTrigger2(edge,cb_function,priority);
+			break;
+		default:
+			break;
+	}
+}
+
+void enableInterruptTrigger(uint8_t pin, trigger_edge_t edge, void (*cb_function)(void)) {
+	switch (pin) {
+		case 1:
+			enableInterruptTrigger1(edge,cb_function,4);
+			break;
+		case 2:
+			enableInterruptTrigger2(edge,cb_function,5);
+			break;
+		default:
+			break;
+	}
+}
+
+
+
 void _intTrigger2(void) {
 	TRIGGER2_ISR = TRIGGER2_BM;
     trigger2_IRQ();
@@ -172,3 +258,18 @@ void disableInterruptTrigger2(void) {
 	NVIC_DISABLE_IRQ(TRIGGER2_IRQ);
 	TRIGGER2_IMR &= ~TRIGGER2_BM;
 }
+
+void disableInterruptTrigger(uint8_t pin) {
+	switch (pin) {
+		case 1:
+			disableInterruptTrigger1();
+			break;
+		case 2:
+			disableInterruptTrigger2();
+			break;
+		default:
+			break;
+	}
+}
+
+

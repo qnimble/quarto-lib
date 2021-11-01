@@ -21,4 +21,5 @@ void serialprintint(uint32_t value) {
 
 void serialprintintashex(uint32_t value) {
 	Serial.print(value,HEX);
+	//Serial.printf("%04x",value);
 }
