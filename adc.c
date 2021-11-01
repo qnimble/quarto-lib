@@ -220,29 +220,29 @@ void disableADC(uint8_t channel) {
 
 
 
-int16_t inline readADC1RAW_from_ISR(void) {
+int16_t readADC1RAW_from_ISR(void) {
 	ADC1_ISR = ADC1_BM; // Clear Interrupt
 	int16_t read = GPIO6_DR >> 16;
 	ADC_ACK_BANK_TOGGLE = ADC_ACK_PIN; // Tooggle bootmode 0 as ACK
 	return read;
 }
 
-double inline readADC1_from_ISR(void) {
-	int32_t read = readADCRAW1_from_ISR();
+double readADC1_from_ISR(void) {
+	int32_t read = readADC1RAW_from_ISR();
 	read = read << (_adc_scalemode[0]);
     double result = ADC_RAW_TO_VOLTAGE * read;
 	return result;
 }
 
-int16_t inline readADC2RAW_from_ISR(void) {
+int16_t readADC2RAW_from_ISR(void) {
 	ADC2_ISR = ADC2_BM; // Clear Interrupt
 	int16_t read = GPIO6_DR >> 16;
 	ADC_ACK_BANK_TOGGLE = ADC_ACK_PIN; // Tooggle bootmode 0 as ACK
 	return read;
 }
 
-double inline readADC2_from_ISR(void) {
-	int32_t read = readADCRAW2_from_ISR();
+double readADC2_from_ISR(void) {
+	int32_t read = readADC2RAW_from_ISR();
 	read = read << (_adc_scalemode[1]);
     double result = ADC_RAW_TO_VOLTAGE * read;
 	return result;
@@ -250,15 +250,15 @@ double inline readADC2_from_ISR(void) {
 
 
 
-int16_t inline readADC3RAW_from_ISR(void) {
+int16_t readADC3RAW_from_ISR(void) {
 	ADC3_ISR = ADC3_BM; // Clear Interrupt
 	int16_t read = GPIO6_DR >> 16;
 	ADC_ACK_BANK_TOGGLE = ADC_ACK_PIN; // Tooggle bootmode 0 as ACK
 	return read;
 }
 
-double inline readADC3_from_ISR(void) {
-	int32_t read = readADCRAW3_from_ISR();
+double readADC3_from_ISR(void) {
+	int32_t read = readADC3RAW_from_ISR();
 	read = read << (_adc_scalemode[2]);
     double result = ADC_RAW_TO_VOLTAGE * read;
 	return result;
@@ -266,15 +266,15 @@ double inline readADC3_from_ISR(void) {
 
 
 
-int16_t inline readADC4RAW_from_ISR(void) {
+int16_t readADC4RAW_from_ISR(void) {
 	ADC4_ISR = ADC4_BM; // Clear Interrupt
 	int16_t read = GPIO6_DR >> 16;
 	ADC_ACK_BANK_TOGGLE = ADC_ACK_PIN; // Tooggle bootmode 0 as ACK
 	return read;
 }
 
-double inline readADC4_from_ISR(void) {
-	int32_t read = readADCRAW4_from_ISR();
+double readADC4_from_ISR(void) {
+	int32_t read = readADC4RAW_from_ISR();
 	read = read << (_adc_scalemode[3]);
 	double result = ADC_RAW_TO_VOLTAGE * read;
 	return result;
