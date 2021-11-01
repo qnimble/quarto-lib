@@ -220,7 +220,7 @@ void disableADC(uint8_t channel) {
 
 
 
-int16_t inline readADCRAW1_from_ISR(void) {
+int16_t inline readADC1RAW_from_ISR(void) {
 	ADC1_ISR = ADC1_BM; // Clear Interrupt
 	int16_t read = GPIO6_DR >> 16;
 	ADC_ACK_BANK_TOGGLE = ADC_ACK_PIN; // Tooggle bootmode 0 as ACK
@@ -234,7 +234,7 @@ double inline readADC1_from_ISR(void) {
 	return result;
 }
 
-int16_t inline readADCRAW2_from_ISR(void) {
+int16_t inline readADC2RAW_from_ISR(void) {
 	ADC2_ISR = ADC2_BM; // Clear Interrupt
 	int16_t read = GPIO6_DR >> 16;
 	ADC_ACK_BANK_TOGGLE = ADC_ACK_PIN; // Tooggle bootmode 0 as ACK
@@ -250,7 +250,7 @@ double inline readADC2_from_ISR(void) {
 
 
 
-int16_t inline readADCRAW3_from_ISR(void) {
+int16_t inline readADC3RAW_from_ISR(void) {
 	ADC3_ISR = ADC3_BM; // Clear Interrupt
 	int16_t read = GPIO6_DR >> 16;
 	ADC_ACK_BANK_TOGGLE = ADC_ACK_PIN; // Tooggle bootmode 0 as ACK
@@ -266,7 +266,7 @@ double inline readADC3_from_ISR(void) {
 
 
 
-int16_t inline readADCRAW4_from_ISR(void) {
+int16_t inline readADC4RAW_from_ISR(void) {
 	ADC4_ISR = ADC4_BM; // Clear Interrupt
 	int16_t read = GPIO6_DR >> 16;
 	ADC_ACK_BANK_TOGGLE = ADC_ACK_PIN; // Tooggle bootmode 0 as ACK

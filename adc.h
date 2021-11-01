@@ -58,10 +58,10 @@ void configureADC3(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 void configureADC4(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*cb_function)(void) );
 void configureADC(uint8_t channel, uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scale, void (*cb_function)(void) );
 
-int16_t inline readADCRAW1_from_ISR(void);
-int16_t inline readADCRAW2_from_ISR(void);
-int16_t inline readADCRAW3_from_ISR(void);
-int16_t inline readADCRAW4_from_ISR(void);
+int16_t inline readADC1RAW_from_ISR(void);
+int16_t inline readADC2RAW_from_ISR(void);
+int16_t inline readADC3RAW_from_ISR(void);
+int16_t inline readADC4RAW_from_ISR(void);
 
 double inline readADC1_from_ISR(void);
 double inline readADC2_from_ISR(void);
