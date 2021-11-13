@@ -178,6 +178,14 @@ uint16_t getHardwareMinorRev(void) {
 	return minor;
 }
 
+uint16_t getFirmwareVersion(void) {
+	return readData(FIRMWARE_VERSION_ADDRESS);
+}
+
+uint16_t getFirmwareHWID(void) {
+	return readData(FIRMWARE_HWID_ADDRESS);
+}
+
 
 void getHardwareUUID(uint8_t* uuid) {
 	readNVMblock(uuid,sizeof(uint32_t)*4,UUID_ADDRESS);

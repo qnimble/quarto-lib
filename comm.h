@@ -21,6 +21,10 @@
 #define HARDWARE_MINOR_ADDRESS 0x1800C
 #define UUID_ADDRESS 0x18010
 
+#define FIRMWARE_VERSION_ADDRESS 0x90
+#define FIRMWARE_HWID_ADDRESS 0x91
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -43,6 +47,8 @@ uint32_t getSerialNumber(void);
 uint16_t getHardwareID(void);
 uint16_t getHardwareMajorRev(void);
 uint16_t getHardwareMinorRev(void);
+uint16_t getFirmwareHWID(void);
+uint16_t getFirmwareVersion(void);
 
 
 
