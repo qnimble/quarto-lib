@@ -160,22 +160,16 @@ uint32_t getSerialNumber(void) {
 }
 
 uint16_t getHardwareID(void) {
-	uint16_t hid;
-	readNVMblock(&hid,sizeof(hid),HARDWARE_ID_ADDRESS);
-	return hid;
+	return readNVM(HARDWARE_ID_ADDRESS);
 }
 
 
 uint16_t getHardwareMajorRev(void) {
-	uint16_t major;
-	readNVMblock(&major,sizeof(major),HARDWARE_MAJOR_ADDRESS);
-	return major;
+	return readNVM(HARDWARE_MAJOR_ADDRESS);
 }
 
 uint16_t getHardwareMinorRev(void) {
-	uint16_t minor;
-	readNVMblock(&minor,sizeof(minor),HARDWARE_MINOR_ADDRESS);
-	return minor;
+	return readNVM(HARDWARE_MINOR_ADDRESS);
 }
 
 uint16_t getFirmwareVersion(void) {
