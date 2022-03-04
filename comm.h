@@ -49,7 +49,9 @@ uint16_t getHardwareMajorRev(void);
 uint16_t getHardwareMinorRev(void);
 uint16_t getFirmwareHWID(void);
 uint16_t getFirmwareVersion(void);
-
+uint8_t getFirmwareMajorRev(void);
+uint16_t getFirmwareMinorRev(void);
+uint16_t getFirmwarePatchRev(void);
 
 
 #ifdef __cplusplus

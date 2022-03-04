@@ -180,6 +180,19 @@ uint16_t getFirmwareHWID(void) {
 	return readData(FIRMWARE_HWID_ADDRESS);
 }
 
+uint8_t getFirmwareMajorRev(void) {
+	return (getFirmwareHWID() & 0x8000) == 0x8000;
+}
+
+uint16_t getFirmwareMinorRev(void) {
+	return getFirmwareHWID() & ~0x8000;
+}
+
+uint16_t getFirmwarePatchRev(void) {
+	return getFirmwareVersion();
+}
+
+
 
 void getHardwareUUID(uint8_t* uuid) {
 	readNVMblock(uuid,sizeof(uint32_t)*4,UUID_ADDRESS);
