@@ -82,8 +82,7 @@ void quarto_wdog_disable(void) {
 	while((WDOG3_CS & (WDOG_CS_ULK)) == 0); //wait until registers are unlocked
 
 	WDOG3_CS &= ~WDOG_CS_EN;
-	while(WDOG3_CS & (WDOG_CS_EN)) ; //wait until off;
-
+	while((WDOG3_CS & (WDOG_CS_RCS)) == 0); //wait until reconfiguration done
 	NVIC_DISABLE_IRQ(IRQ_SNVS_IRQ);
 	__enable_irq();
 }
