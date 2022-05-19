@@ -31,7 +31,7 @@ extern "C" {
 void quarto_wdog_init(uint16_t timeout);
 void snvs_isr(void);
 void quarto_wdog_disable(void);
-
+void setDebugWord(uint32_t word);
 
 #ifdef __cplusplus
 }
