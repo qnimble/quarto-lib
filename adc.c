@@ -36,7 +36,7 @@ void configureADC1(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 #endif
 
 	attachInterruptVector(ADC1_IRQ, cb_function);
-	NVIC_SET_PRIORITY(ADC1_IRQ, 0<<4);
+	NVIC_SET_PRIORITY(ADC1_IRQ, 16);
 	NVIC_ENABLE_IRQ(ADC1_IRQ);
 }
 
@@ -59,7 +59,7 @@ void configureADC2(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 	ADC2_ICR2 = ICR_temp;
 #endif
 	attachInterruptVector(ADC2_IRQ, cb_function);
-	NVIC_SET_PRIORITY(ADC2_IRQ, 1<<4);
+	NVIC_SET_PRIORITY(ADC2_IRQ, 20);
 	NVIC_ENABLE_IRQ(ADC2_IRQ);
 }
 
@@ -83,7 +83,7 @@ void configureADC3(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 #endif
 
 	attachInterruptVector(ADC3_IRQ, cb_function);
-	NVIC_SET_PRIORITY(ADC3_IRQ, 2<<4);
+	NVIC_SET_PRIORITY(ADC3_IRQ, 24);
 	NVIC_ENABLE_IRQ(ADC3_IRQ);
 }
 
@@ -107,7 +107,7 @@ void configureADC4(uint16_t fire_every_us, uint16_t fire_delay, adc_scale_t scal
 #endif
 
 	attachInterruptVector(ADC4_IRQ, cb_function);
-	NVIC_SET_PRIORITY(ADC4_IRQ, 3<<4);
+	NVIC_SET_PRIORITY(ADC4_IRQ, 28);
 	NVIC_ENABLE_IRQ(ADC4_IRQ);
 }
 

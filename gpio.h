@@ -81,8 +81,8 @@ void toggleLEDBlue(void);
 
 
 #ifdef __cplusplus
-	void enableInterruptTrigger1(trigger_edge_t edge, void (*cb_function)(void), unsigned int priority = 4);
-	void enableInterruptTrigger2(trigger_edge_t edge, void (*cb_function)(void), unsigned int priority = 5);
+	void enableInterruptTrigger1(trigger_edge_t edge, void (*cb_function)(void), unsigned int priority = 2);
+	void enableInterruptTrigger2(trigger_edge_t edge, void (*cb_function)(void), unsigned int priority = 3);
 	void enableInterruptTrigger(uint8_t pin, trigger_edge_t edge, void (*cb_function)(void));
 	void enableInterruptTrigger(uint8_t pin, trigger_edge_t edge, void (*cb_function)(void), unsigned int priority);
 extern "C" {
