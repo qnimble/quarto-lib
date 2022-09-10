@@ -192,6 +192,23 @@ uint16_t getFirmwarePatchRev(void) {
 }
 
 
+char* getBootloaderRev(void) {
+  uint32_t* data_ptr = (uint32_t*) 0x60000800;
+  if (*data_ptr == LOOKUP_TABLE_START_CODE) {
+    /*
+    char* str_ptr = (char*) *(data_ptr + 1);
+    Serial.printf("Full Bootloader Version is %s",str_ptr);
+    str_ptr = (char*)  *(data_ptr + 2);
+    Serial.printf("Version of bootloader info is %s\n",(str_ptr));
+    Serial.printf("Flash Size: 0x%08x\n",*(data_ptr+3));
+    Serial.printf("End Code: 0x%08x\n",*(data_ptr+4));
+    */
+    return (char*) *(data_ptr + 2);
+  } else {
+    return NULL;
+  }
+}
+
 
 void getHardwareUUID(uint8_t* uuid) {
 	readNVMblock(uuid,sizeof(uint32_t)*4,UUID_ADDRESS);

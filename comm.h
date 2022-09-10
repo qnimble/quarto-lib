@@ -24,6 +24,10 @@
 #define FIRMWARE_VERSION_ADDRESS 0x90
 #define FIRMWARE_HWID_ADDRESS 0x91
 
+#define LOOKUP_TABLE_START_CODE 0xFD23B500
+#define LOOKUP_TABLE_END_CODE   0xEC12A400
+
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -52,6 +56,7 @@ uint16_t getFirmwareVersion(void);
 uint8_t getFirmwareMajorRev(void);
 uint16_t getFirmwareMinorRev(void);
 uint16_t getFirmwarePatchRev(void);
+char* getBootloaderRev(void);
 
 bool useExtClock(bool active);
 bool readExtClockEnabled(void);
