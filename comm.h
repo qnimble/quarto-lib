@@ -13,7 +13,7 @@
 #define COMM_H_
 
 #include <stdio.h>
-
+#include <stdbool.h>
 
 #define SERIAL_NUMBER_ADDRESS 0x18004
 #define HARDWARE_ID_ADDRESS 0x18008
@@ -53,6 +53,9 @@ uint8_t getFirmwareMajorRev(void);
 uint16_t getFirmwareMinorRev(void);
 uint16_t getFirmwarePatchRev(void);
 
+bool useExtClock(bool active);
+bool readExtClockEnabled(void);
+bool readExtClockActive(void);
 
 #ifdef __cplusplus
 }

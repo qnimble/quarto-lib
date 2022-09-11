@@ -56,6 +56,19 @@ uint8_t triggerRead(uint8_t pin) {
 	}
 }
 
+void triggerToggle(uint8_t pin) {
+	switch (pin) {
+		case 1:
+			digitalToggle(12);
+			break;
+		case 2:
+			digitalToggle(13);
+			break;
+		default:
+			break;
+	}
+}
+
 
 /*
 void setTrigger1Direction(io_direction_t direction) {

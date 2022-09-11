@@ -66,6 +66,7 @@ void setTrigger2Direction(io_direction_t direction);
 void triggerMode(uint8_t pin, uint8_t mode);
 void triggerWrite(uint8_t pin, uint8_t value);
 uint8_t triggerRead(uint8_t pin);
+void triggerToggle(uint8_t pin);
 void setTriggerDirection(uint8_t channel,io_direction_t direction);
 void setLED(bool red, bool green, bool blue);
 void toggleLED(bool red, bool green, bool blue);

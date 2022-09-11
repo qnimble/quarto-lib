@@ -15,7 +15,6 @@
 #include "pins_arduino.h"
 #include "core_pins.h"
 
-
 static int _status = 0;
 
 void setWriteAddress(uint16_t address) {
@@ -350,4 +349,26 @@ void ClearDataRequests(void) {
 }
 
 
+bool useExtClock(bool active) {
+  uint16_t output;
+  output = readData(0x010); //read current settings
+  if (active) {
+	  output |= 0x10; //set bit to enable external clock
+  } else {
+	  output &= ~0x10; //clear bit to disable external clock
+  }
+  setWriteAddress(0x010); //Set Write address to 0x010 for updating settings
+  writeData(output); //Set new settings to enable external clock
+  return readExtClockEnabled();
+}
 
+bool readExtClockEnabled(void) {
+  uint16_t output = readData(0x010) ; //read current settings
+  return output & 0x10;
+}
+
+bool readExtClockActive(void) {
+  uint16_t data = readData(0x09F); //read ext clock status
+  if ( data == 02 ) return 1;
+  else return 0;
+}
