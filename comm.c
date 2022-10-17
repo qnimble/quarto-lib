@@ -307,12 +307,6 @@ void writeNVMpages(void* data,uint16_t data_size, uint16_t start_page) {
 			bytes_to_zero -= 4;
 		}
 
-		//do unlock
-		_setNVMaddress(0x60D80148); // CMD  register
-		uint32_t unlock = 0x05000000;
-		_sendNVMdata(unlock); //do wr
-
-
 		//loading full page with data
 		_setNVMaddress(0x60080148); // CMD  register
 		uint32_t payload = 0x08000000;
