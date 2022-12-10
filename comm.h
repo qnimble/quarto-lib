@@ -68,6 +68,7 @@ char* getBootloaderRev(void);
 
 bool readExtClockEnabled(void);
 bool readExtClockActive(void);
+bool readExtADCClockEnabled(void);
 
 #ifdef __cplusplus
 }

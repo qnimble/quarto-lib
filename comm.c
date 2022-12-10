@@ -12,6 +12,7 @@
 
 #include "imxrt.h"
 #include "comm.h"
+#include "gpio.h"
 #include "pins_arduino.h"
 #include "core_pins.h"
 
@@ -366,8 +367,10 @@ bool useExtClock(bool active, uint8_t trigger_pin) {
 	if (active) {
 		if (trigger_pin == 1) {
 			output |= 0x10; //set bit to enable external clock
+			triggerMode(1,INPUT); //do not driver trigger 1 if using as clock input
 		} else if (trigger_pin == 2 ) {
 			output |= 0x30; //set bit to enable external clock
+			triggerMode(2,INPUT); //do not driver trigger 2 if using as clock input
 		} else {
 			return false;
 		}
@@ -405,5 +408,12 @@ bool useExtADCClock(bool active, uint8_t trigger_pin) {
 	}
 	setWriteAddress(0x010); //Set Write address to 0x010 for updating settings
 	writeData(output); //Set new settings to enable external clock
-	return readExtClockEnabled();
+	return readExtADCClockEnabled();
 }
+
+bool readExtADCClockEnabled(void) {
+  uint16_t output = readData(0x010) ; //read current settings
+  return ( ( ( output & 0x40) == 0x40 ) || ( ( output & 0x80) == 0x80 ) ) ;
+}
+
+
