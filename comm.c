@@ -389,3 +389,21 @@ bool readExtClockActive(void) {
   if ( data == 02 ) return 1;
   else return 0;
 }
+
+bool useExtADCClock(bool active, uint8_t trigger_pin) {
+	uint16_t output;
+	output = readData(0x010); //read current settings
+	output &= ~0xC0; //clear ADC clock settings
+	if (active) {
+		if (trigger_pin == 1) {
+			output |= 0x40; //set bit to enable external clock
+		} else if (trigger_pin == 2 ) {
+			output |= 0x80; //set bit to enable external clock
+		} else {
+			return false;
+		}
+	}
+	setWriteAddress(0x010); //Set Write address to 0x010 for updating settings
+	writeData(output); //Set new settings to enable external clock
+	return readExtClockEnabled();
+}

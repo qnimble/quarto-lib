@@ -60,8 +60,10 @@ char* getBootloaderRev(void);
 
 #ifdef __cplusplus
 	bool useExtClock(bool active, uint8_t trigger_pin = 1);
+	bool useExtADCClock(bool active, uint8_t trigger_pin = 1);
 #else
 	bool useExtClock(bool active, uint8_t trigger_pin);
+	bool useExtADCClock(bool active, uint8_t trigger_pin);
 #endif
 
 bool readExtClockEnabled(void);
