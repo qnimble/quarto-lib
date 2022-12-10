@@ -58,7 +58,12 @@ uint16_t getFirmwareMinorRev(void);
 uint16_t getFirmwarePatchRev(void);
 char* getBootloaderRev(void);
 
-bool useExtClock(bool active);
+#ifdef __cplusplus
+	bool useExtClock(bool active, uint8_t trigger_pin = 1);
+#else
+	bool useExtClock(bool active, uint8_t trigger_pin);
+#endif
+
 bool readExtClockEnabled(void);
 bool readExtClockActive(void);
 

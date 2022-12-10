@@ -360,22 +360,28 @@ void ClearDataRequests(void) {
 }
 
 
-bool useExtClock(bool active) {
-  uint16_t output;
-  output = readData(0x010); //read current settings
-  if (active) {
-	  output |= 0x10; //set bit to enable external clock
-  } else {
-	  output &= ~0x10; //clear bit to disable external clock
-  }
-  setWriteAddress(0x010); //Set Write address to 0x010 for updating settings
-  writeData(output); //Set new settings to enable external clock
-  return readExtClockEnabled();
+bool useExtClock(bool active, uint8_t trigger_pin) {
+	uint16_t output;
+	output = readData(0x010); //read current settings
+	if (active) {
+		if (trigger_pin == 1) {
+			output |= 0x10; //set bit to enable external clock
+		} else if (trigger_pin == 2 ) {
+			output |= 0x30; //set bit to enable external clock
+		} else {
+			return false;
+		}
+	} else {
+		output &= ~0x10; //clear bit to disable external clock
+	}
+	setWriteAddress(0x010); //Set Write address to 0x010 for updating settings
+	writeData(output); //Set new settings to enable external clock
+	return readExtClockEnabled();
 }
 
 bool readExtClockEnabled(void) {
   uint16_t output = readData(0x010) ; //read current settings
-  return output & 0x10;
+  return output & 0x30;
 }
 
 bool readExtClockActive(void) {
