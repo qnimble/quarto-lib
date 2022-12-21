@@ -69,6 +69,25 @@ void triggerToggle(uint8_t pin) {
 	}
 }
 
+float readTriggerClockFreq(uint8_t pin) {
+
+	switch(pin) {
+		case 1:
+			pin = 12;
+			break;
+		case 2:
+			pin = 13;
+			break;
+		default:
+			return 0;
+			break;
+	}
+
+	return readAnalogWriteFrequency(pin);
+
+}
+
+
 
 /*
 void setTrigger1Direction(io_direction_t direction) {
@@ -283,6 +302,35 @@ void disableInterruptTrigger(uint8_t pin) {
 		default:
 			break;
 	}
+}
+
+
+float setTriggerClockFreq(float freq) {
+	analogWriteFrequency(12,freq);
+	return readTriggerClockFreq();
+}
+
+float readTriggerClockFreq(void) {
+	return readAnalogWriteFrequency(12);
+}
+
+void useTriggerClockOutput(uint8_t pin, bool enable) {
+	switch (pin) {
+	case 1:
+		break;
+	case 2:
+		break;
+	default:
+		return;
+		break;
+	}
+
+	if (enable) {
+		analogWrite(11+pin,128);
+	} else {
+		*(portConfigRegister(11+pin)) = 0x0015; //Set to normal GPIO pin
+	}
+
 }
 
 

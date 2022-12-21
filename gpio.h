@@ -91,10 +91,9 @@ void toggleLEDRed(void);
 void toggleLEDGreen(void);
 void toggleLEDBlue(void);
 
-
-
-
-
+float setTriggerClockFreq(float freq);
+float readTriggerClockFreq(void);
+void useTriggerClockOutput(uint8_t pin, bool enable);
 
 
 static inline void setTrigger1High(void) __attribute__((always_inline, unused));
