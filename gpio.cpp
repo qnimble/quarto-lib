@@ -196,7 +196,7 @@ void enableInterruptTrigger1(trigger_edge_t edge, void (*cb_function)(void), uns
 
     trigger1_IRQ = cb_function;
 	NVIC_DISABLE_IRQ(TRIGGER1_IRQ);
-	TRIGGER1_IMR |= TRIGGER1_BM;
+	TRIGGER1_IMR &= ~TRIGGER1_BM;
 
 	if (edge == RISING_EDGE) {
 		TRIGGER1_ICR1 &= ~ ( (0x3)<<(2*TRIGGER1_PIN) ); //mask off active bits
@@ -213,6 +213,7 @@ void enableInterruptTrigger1(trigger_edge_t edge, void (*cb_function)(void), uns
 	attachInterruptVector(TRIGGER1_IRQ, _intTrigger1);
 	NVIC_SET_PRIORITY(TRIGGER1_IRQ, priority);
 	NVIC_ENABLE_IRQ(TRIGGER1_IRQ);
+	TRIGGER1_IMR |= TRIGGER1_BM;
 }
 
 void _intTrigger1(void) {
@@ -227,7 +228,7 @@ void enableInterruptTrigger2(trigger_edge_t edge, void (*cb_function)(void), uns
 
     trigger2_IRQ = cb_function;
 	NVIC_DISABLE_IRQ(TRIGGER2_IRQ);
-	TRIGGER2_IMR |= TRIGGER2_BM;
+	TRIGGER2_IMR &= ~TRIGGER2_BM;
 
 	if (edge == RISING_EDGE) {
 		TRIGGER2_ICR1 &= ~ ( (0x3)<<(2*TRIGGER2_PIN) );//mask off active bits
@@ -245,6 +246,7 @@ void enableInterruptTrigger2(trigger_edge_t edge, void (*cb_function)(void), uns
 	attachInterruptVector(TRIGGER2_IRQ, _intTrigger2);
 	NVIC_SET_PRIORITY(TRIGGER2_IRQ, priority);
 	NVIC_ENABLE_IRQ(TRIGGER2_IRQ);
+	TRIGGER2_IMR |= TRIGGER2_BM;
 }
 
 void enableInterruptTrigger(uint8_t pin, trigger_edge_t edge, void (*cb_function)(void), unsigned int priority) {
