@@ -59,10 +59,10 @@ void _setNVMaddress(uint32_t address) {
 
 uint16_t readData(uint16_t address) {
 	//GPIO6_DR_SET = 0x02;
-	uint full_loops = 0;
+	unsigned int full_loops = 0;
 	while(1) {
 		GPIO2_DR_TOGGLE = (0x000F0000 + address);
-		uint i = 0;
+		unsigned int i = 0;
 		while(readReady() == 0) { //Wait until data ready
 			i++;
 			if (i > 300){
@@ -314,7 +314,7 @@ void writeNVMpages(void* data,uint16_t data_size, uint16_t start_page) {
 		payload +=  ((128*start_page++) & 0x3FF80) ; //set page by masking addresses lowest 7 bits (and bits above 17 to keep in eNVM space)
 		_sendNVMdata(payload); //do write
 
-		uint loops = 0;
+		unsigned int loops = 0;
 		while(1) {
 			_setNVMaddress(0x60080120); // status register
 			result = readData(0x1000); //read from same spot
