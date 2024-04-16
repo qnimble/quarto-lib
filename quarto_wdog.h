@@ -13,7 +13,7 @@
 #define QUARTO_WDOG_H_
 
 #include <stdint.h>
-
+#include "core_pins.h"
 #define CRASHREPORT_HARDFAULT_APPLICATION 0xBADA0000
 #define CRASHREPORT_HARDFAULT_BOOTLOADER  0xBADB0000
 #define CRASHREPORT_RUN_APPLICATION  0xAABB0000
@@ -31,7 +31,7 @@ extern "C" {
 void quarto_wdog_init(uint16_t timeout);
 void snvs_isr(void);
 void quarto_wdog_disable(void);
-void setDebugWord(uint32_t word);
+static inline void setDebugWord(uint32_t word) {SRC_GPR5 = word;};
 
 #ifdef __cplusplus
 }

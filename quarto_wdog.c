@@ -86,7 +86,3 @@ void quarto_wdog_disable(void) {
 	NVIC_DISABLE_IRQ(IRQ_SNVS_IRQ);
 	__enable_irq();
 }
-
-void setDebugWord(uint32_t word) {
-	SRC_GPR5 = word;
-}
