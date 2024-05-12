@@ -191,7 +191,7 @@ static void (*trigger1_IRQ)(void);
 static void (*trigger2_IRQ)(void);
 
 void enableInterruptTrigger1(trigger_edge_t edge, void (*cb_function)(void), unsigned int priority) {
-	if (priority > 15) priority = 15;
+	if (priority > 15) priority = 15*16;
 	else priority = priority*16;
 
     trigger1_IRQ = cb_function;
