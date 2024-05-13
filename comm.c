@@ -15,6 +15,7 @@
 #include "gpio.h"
 #include "pins_arduino.h"
 #include "core_pins.h"
+#include "pgmspace.h"
 
 static int _status = 0;
 
@@ -192,21 +193,14 @@ uint16_t getFirmwarePatchRev(void) {
 	return getFirmwareVersion();
 }
 
-
+FLASHMEM char NoVersion[] = "0";
 char* getBootloaderRev(void) {
   uint32_t* data_ptr = (uint32_t*) 0x60000800;
-  if (*data_ptr == LOOKUP_TABLE_START_CODE) {
-    /*
-    char* str_ptr = (char*) *(data_ptr + 1);
-    Serial.printf("Full Bootloader Version is %s",str_ptr);
-    str_ptr = (char*)  *(data_ptr + 2);
-    Serial.printf("Version of bootloader info is %s\n",(str_ptr));
-    Serial.printf("Flash Size: 0x%08x\n",*(data_ptr+3));
-    Serial.printf("End Code: 0x%08x\n",*(data_ptr+4));
-    */
+  if ((*data_ptr == LOOKUP_TABLE_START_CODE ) || (*data_ptr == LOOKUP_TABLE_START_CODE + 1 ) ) {
+    //Supports LOOKUP_TABLE_START_CODE version 0 and 1
     return (char*) *(data_ptr + 2);
   } else {
-    return NULL;
+	return NoVersion;
   }
 }
 
