@@ -196,8 +196,8 @@ uint16_t getFirmwarePatchRev(void) {
 FLASHMEM char NoVersion[] = "0";
 char* getBootloaderRev(void) {
   uint32_t* data_ptr = (uint32_t*) 0x60000800;
-  if ((*data_ptr == LOOKUP_TABLE_START_CODE ) || (*data_ptr == LOOKUP_TABLE_START_CODE + 1 ) ) {
-    //Supports LOOKUP_TABLE_START_CODE version 0 and 1
+  if ((*data_ptr >= LOOKUP_TABLE_START_CODE ) && (*data_ptr <= LOOKUP_TABLE_START_CODE + 2 ) ) {
+    //Supports LOOKUP_TABLE_START_CODE versions 0 - 2
     return (char*) *(data_ptr + 2);
   } else {
 	return NoVersion;
