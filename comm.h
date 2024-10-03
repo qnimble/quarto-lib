@@ -46,7 +46,7 @@ uint8_t readReady(void);
 uint16_t writeAndRead(uint16_t address,uint16_t data);
 int readStatus(void) ;
 void writeNVMpages(void* data,uint16_t data_size, uint16_t first_page);
-void getHardwareUUID(uint8_t* uuid);
+void getHardwareUUID(void* uuid, size_t size);
 uint32_t getSerialNumber(void);
 uint16_t getHardwareID(void);
 uint16_t getHardwareMajorRev(void);

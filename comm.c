@@ -17,6 +17,8 @@
 #include "core_pins.h"
 #include "pgmspace.h"
 
+
+
 static int _status = 0;
 
 void setWriteAddress(uint16_t address) {
@@ -205,8 +207,9 @@ char* getBootloaderRev(void) {
 }
 
 
-void getHardwareUUID(uint8_t* uuid) {
-	readNVMblock(uuid,sizeof(uint32_t)*4,UUID_ADDRESS);
+void getHardwareUUID(void* uuid, size_t size) {
+	size = (size > 16) ? 16 : size;
+	readNVMblock(uuid,size,UUID_ADDRESS);
 	return;
 }
 
